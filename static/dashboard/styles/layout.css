@@ -1,0 +1,291 @@
+/* For employee profile pages: narrow container, no horizontal scroll */
+.container.profile-container {
+    max-width: 800px;
+    margin: 110px auto 0 auto;
+    overflow-x: hidden;
+    width: 100%;
+    height: auto;
+    display: flex;
+    overflow-y: auto;
+}
+/* Back to Dashboard Button */
+.back-dashboard-btn {
+    background: #fff;
+    color: #2196f3;
+    border: 2px solid #2196f3;
+    border-radius: 6px;
+    padding: 10px 20px;
+    font-size: 1em;
+    font-weight: 600;
+    margin-top: 18px;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+}
+.back-dashboard-btn:hover {
+    background: #2196f3;
+    color: #fff;
+}
+/* Dashboard Widgets */
+.dashboard-widgets {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 32px;
+    margin-bottom: 32px;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+.stats-cards {
+    display: flex;
+    flex-direction: row;
+    gap: 24px;
+}
+.stat-card {
+    background: #e3f2fd;
+    border-radius: 10px;
+    box-shadow: 0 1px 4px rgba(110,198,243,0.10);
+    padding: 18px 32px;
+    min-width: 120px;
+    text-align: center;
+}
+.stat-value {
+    font-size: 2em;
+    font-weight: bold; 
+    color: #2196f3;
+}
+.stat-label {
+    font-size: 1em;
+    color: #1a2233;
+    margin-top: 6px;
+}
+.dashboard-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+.add-employee-btn {
+    background: #6ec6f3;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 12px 24px;
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 1px 4px rgba(110,198,243,0.10);
+    transition: background 0.15s;
+}
+.add-employee-btn:hover {
+    background: #2196f3;
+}
+.notifications {
+    background: none;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 8px 0 0 0;
+    min-width: 220px;
+    max-width: 300px;
+    color: #fff;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+.notifications h3 {
+    margin: 0 0 10px 0;
+    font-size: 1.25em;
+    color: #ffd700;
+    letter-spacing: 2px;
+    text-align: center;
+    width: 100%;
+    font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
+    font-weight: 700;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    text-transform: uppercase;
+    background: linear-gradient(90deg, #ffd700 30%, #6ec6f3 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+.notifications ul {
+    list-style: none;
+    padding: 0 18px;
+    margin: 0;
+    width: 100%;
+}
+.notifications li {
+    font-size: 1em;
+    color: #fff;
+    margin-bottom: 0;
+    padding: 12px 0;
+    border-bottom: 1px solid #3a4662;
+    text-align: left;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    letter-spacing: 0.2px;
+}
+.notifications li:last-child {
+    border-bottom: none;
+}
+.notifications-sidebar {
+    margin-top: 24px;
+}
+/* Increase the size of the search input inside the searchbar */
+.searchbar input[type="text"] {
+    width: 400px;
+    height: 10px;
+    font-size: 1.2em;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-weight: 600;
+    color: #222;
+}
+
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 110px;
+    background: linear-gradient(90deg, #ffd700 30%, #6ec6f3 100%);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: flex-start;
+    padding: 0 32px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+}
+.header p {
+    font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
+    font-weight: 700;
+    font-size: 1.25em;
+    color: #fff;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    letter-spacing: 1.2px;
+    margin: 0 0 0 0;
+    background: none;
+    z-index: 1000;
+}
+
+.header .profile-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #fff url('https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f464.svg') center/60% no-repeat;
+    border: 2px solid #b2ebf2;
+    margin-left: 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+}
+
+.sidebar {
+    position: fixed;
+    top: 110px;
+    left: 0;
+    width: 220px;
+    height: calc(100vh - 110px);
+    background-color: #1a2233;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 32px 0 0 0;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.04);
+    z-index: 900;
+}
+
+.sidebar .sidebar-item {
+    display: flex;
+    align-items: center;
+    padding: 14px 32px;
+    width: 100%;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background 0.15s;
+    border: none;
+    background: none;
+}
+.sidebar .sidebar-item:hover {
+    background: #26304a;
+}
+.sidebar .sidebar-icon {
+    width: 22px;
+    height: 22px;
+    margin-right: 16px;
+    background: #fff2 url('https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/1f4bc.svg') center/70% no-repeat;
+    border-radius: 6px;
+    margin-right: 24px;
+    margin-left: 0;
+}
+.header > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    z-index: 1000;
+}
+h2 {
+    margin: 0;
+}
+
+.searchbar {
+    display: flex;
+    align-items: center;
+    box-shadow: 0 4px 18px 0 rgba(110,198,243,0.13), 0 1.5px 8px 0 rgba(0,0,0,0.07);
+    max-width: 700px;
+    min-width: 350px;
+    width: 70%;
+    position: relative;
+    justify-content: center;
+    height: 48px;
+    transition: box-shadow 0.2s, background 0.2s;
+    margin-top: 150px;
+    margin-bottom: 40px;
+}
+h2 {
+    margin: 0;
+}
+
+/* Employee Feed Styles */
+.feed {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    overflow-x: hidden;
+    overflow-y: auto;
+
+}
+.employee-card {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    background: #f8fafc;
+    border-radius: 12px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    padding: 18px 22px;
+    text-decoration: none;
+    color: #222;
+    transition: box-shadow 0.15s, background 0.15s;
+    cursor: pointer;
+}
+.employee-card:hover {
+    background: #e3f2fd;
+    box-shadow: 0 2px 12px rgba(110,198,243,0.13);
+}
+.employee-info strong {
+    font-size: 1.1em;
+    display: block;
+    margin-bottom: 4px;
+}
+.employee-info span {
+    font-size: 0.98em;
+    color: #6b7280;
+}
+
