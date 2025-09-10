@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- META TAGS: Basic information about the page -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PayrollPro - Simple Salary Management System</title>
+    
+    <!-- STYLESHEETS: Link to our simple CSS file -->
+    <link rel="stylesheet" href="simple_styles.css">
+</head>
+<body>
+    <!-- NAVIGATION BAR: Top navigation with logo and links -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-content">
+                <!-- Logo/Brand name -->
+                <a href="index.html" class="navbar-brand">PayrollPro</a>
+                
+                <!-- Navigation links -->
+                <ul class="navbar-nav">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="login.html">Login</a></li>
+                </ul>
+                
+                <!-- User actions -->
+                <div class="navbar-user">
+                    <a href="login.html" class="btn btn-primary">Login</a>
+                    <a href="signup.html" class="btn btn-secondary">Sign Up</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION: Main banner with call-to-action -->
+    <section class="hero-section">
+        <div class="container">
+            <!-- Main headline -->
+            <h1 class="hero-title"> Salary Management</h1>
+            
+            <!-- Subtitle description -->
+            <p class="hero-subtitle">
+                Manage employee salaries, payrolls, and company finances with ease.
+                Built for HR managers, directors, and administrators.
+            </p>
+            
+            <!-- Action buttons -->
+            <div class="hero-buttons">
+                <a href="signup.html" class="btn-hero btn-hero-primary">Get Started</a>
+                <a href="login.html" class="btn-hero btn-hero-secondary">Login Now</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURES SECTION: Key features of the system -->
+    <section class="features-section" id="features">
+        <div class="container">
+            <!-- Section title -->
+            <h2 class="section-title">Key Features</h2>
+            <p class="section-subtitle">
+                Everything you need to manage payroll efficiently and securely
+            </p>
+            
+            <!-- Features grid -->
+            <div class="features-grid">
+                <!-- Feature 1: Employee Management -->
+                <div class="feature-card">
+                    <div class="feature-icon">👥</div>
+                    <h3 class="feature-title">Employee Management</h3>
+                    <p class="feature-description">
+                        Add, edit, and manage employee information including salary details,
+                        bank accounts, and employment status.
+                    </p>
+                </div>
+                
+                <!-- Feature 2: Payroll Processing -->
+                <div class="feature-card">
+                    <div class="feature-icon">💰</div>
+                    <h3 class="feature-title">Automated Payroll</h3>
+                    <p class="feature-description">
+                        Automatically calculate salaries with bonuses and deductions.
+                        Track payroll status from pending to paid.
+                    </p>
+                </div>
+                
+                <!-- Feature 3: Role-based Access -->
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3 class="feature-title">Role-based Access</h3>
+                    <p class="feature-description">
+                        Different access levels for Admin, HR, and Director roles.
+                        Secure and controlled access to sensitive data.
+                    </p>
+                </div>
+                
+                <!-- Feature 4: Company Finance Tracking -->
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3 class="feature-title">Financial Tracking</h3>
+                    <p class="feature-description">
+                        Monitor company bank balance and ensure sufficient funds
+                        before approving payroll payments.
+                    </p>
+                </div>
+                
+                <!-- Feature 5: Real-time Reports -->
+                <div class="feature-card">
+                    <div class="feature-icon">📈</div>
+                    <h3 class="feature-title">Reports & Analytics</h3>
+                    <p class="feature-description">
+                        Generate comprehensive reports on payroll expenses,
+                        employee costs, and financial summaries.
+                    </p>
+                </div>
+                
+                <!-- Feature 6: Notifications -->
+                <div class="feature-card">
+                    <div class="feature-icon">🔔</div>
+                    <h3 class="feature-title">Smart Notifications</h3>
+                    <p class="feature-description">
+                        Automatic notifications for payroll approvals, payments,
+                        and important system updates.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ABOUT SECTION: Information about the system -->
+    <section class="features-section" id="about" style="background-color: #f8f9fa;">
+        <div class="container">
+            <h2 class="section-title">About PayrollPro</h2>
+            <p class="section-subtitle">
+                A simple, secure, and efficient salary management solution designed for modern businesses
+            </p>
+            
+            <!-- About content grid -->
+            <div class="features-grid" style="margin-top: 40px;">
+                <div class="feature-card">
+                    <h3 class="feature-title">For HR Managers</h3>
+                    <p class="feature-description">
+                        Manage employee records, create payrolls, set payment dates,
+                        and track employee attendance and salary details.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <h3 class="feature-title">For Directors</h3>
+                    <p class="feature-description">
+                        Approve payrolls, monitor company finances, view bank balance,
+                        and oversee overall payroll operations.
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <h3 class="feature-title">For Administrators</h3>
+                    <p class="feature-description">
+                        Full system access, user management, company setup,
+                        and complete control over all system features.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- JAVASCRIPT: Simple interactions for the home page -->
+    <script>
+        // Simple smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Simple mobile menu toggle (if needed)
+        const navToggle = document.querySelector('.navbar-toggle');
+        const navMenu = document.querySelector('.navbar-nav');
+        
+        if (navToggle) {
+            navToggle.addEventListener('click', () => {
+                navMenu.classList.toggle('active');
+            });
+        }
+
+        // Console log for debugging
+        console.log('PayrollPro Home Page Loaded Successfully');
+    </script>
+</body>
+</html>

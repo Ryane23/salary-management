@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR Dashboard - PayrollPro</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar dashboard-nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <h2>PayrollPro</h2>
+            </div>
+            <div class="nav-user">
+                <span id="userName">HR Manager</span>
+                <button onclick="logout()" class="btn btn-sm">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h3>HR Panel</h3>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#dashboard" class="sidebar-link active" data-section="dashboard">
+                    <span class="sidebar-icon">📊</span>
+                    Dashboard
+                </a>
+                <a href="#employees" class="sidebar-link" data-section="employees">
+                    <span class="sidebar-icon">👥</span>
+                    Employees
+                </a>
+                <a href="#payroll" class="sidebar-link" data-section="payroll">
+                    <span class="sidebar-icon">💰</span>
+                    Payroll
+                </a>
+                <a href="#notifications" class="sidebar-link" data-section="notifications">
+                    <span class="sidebar-icon">🔔</span>
+                    Notifications
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Overview -->
+            <section id="dashboard-section" class="content-section active">
+                <div class="section-header">
+                    <h2>HR Dashboard</h2>
+                    <p>Manage employees and payroll processing</p>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">👥</div>
+                        <div class="stat-content">
+                            <h3 id="totalEmployees">-</h3>
+                            <p>Total Employees</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">⏳</div>
+                        <div class="stat-content">
+                            <h3 id="pendingPayrolls">-</h3>
+                            <p>Pending Payrolls</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">✅</div>
+                        <div class="stat-content">
+                            <h3 id="approvedPayrolls">-</h3>
+                            <p>Approved Payrolls</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">💵</div>
+                        <div class="stat-content">
+                            <h3 id="totalPayrollAmount">-</h3>
+                            <p>Total Payroll Amount</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Employees Section -->
+            <section id="employees-section" class="content-section">
+                <div class="section-header">
+                    <h2>Employee Management</h2>
+                    <button onclick="showCreateEmployeeForm()" class="btn btn-primary">Add New Employee</button>
+                </div>
+                
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Role</th>
+                                <th>Base Salary</th>
+                                <th>Phone</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="employeesTableBody">
+                            <!-- Employees will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Payroll Section -->
+            <section id="payroll-section" class="content-section">
+                <div class="section-header">
+                    <h2>Payroll Management</h2>
+                    <button onclick="showCreatePayrollForm()" class="btn btn-primary">Create Monthly Payroll</button>
+                </div>
+                
+                <div class="payroll-filters">
+                    <div class="filter-group">
+                        <label for="monthFilter">Month:</label>
+                        <select id="monthFilter" onchange="loadPayrolls()">
+                            <option value="1">January</option>
+                            <option value="2">February</option>
+                            <option value="3">March</option>
+                            <option value="4">April</option>
+                            <option value="5">May</option>
+                            <option value="6">June</option>
+                            <option value="7">July</option>
+                            <option value="8">August</option>
+                            <option value="9">September</option>
+                            <option value="10">October</option>
+                            <option value="11">November</option>
+                            <option value="12">December</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="yearFilter">Year:</label>
+                        <select id="yearFilter" onchange="loadPayrolls()">
+                            <option value="2024">2024</option>
+                            <option value="2025">2025</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Employee</th>
+                                <th>Base Salary</th>
+                                <th>Attendance Days</th>
+                                <th>Bonus</th>
+                                <th>Deductions</th>
+                                <th>Final Salary</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="payrollTableBody">
+                            <!-- Payrolls will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Notifications Section -->
+            <section id="notifications-section" class="content-section">
+                <div class="section-header">
+                    <h2>Notifications</h2>
+                </div>
+                
+                <div class="notifications-list" id="notificationsList">
+                    <!-- Notifications will be loaded here -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal for Creating Employee -->
+    <div id="employeeModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add New Employee</h3>
+                <span class="close" onclick="closeModal('employeeModal')">&times;</span>
+            </div>
+            <form id="createEmployeeForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="employeeUser">User (Username)</label>
+                        <input type="text" id="employeeUser" name="user" required placeholder="Enter username">
+                    </div>
+                    <div class="form-group">
+                        <label for="employeePhone">Phone</label>
+                        <input type="tel" id="employeePhone" name="phone" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="employeeRole">Role</label>
+                        <input type="text" id="employeeRole" name="role" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="baseSalary">Base Salary</label>
+                        <input type="number" id="baseSalary" name="base_salary" step="0.01" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="bankName">Bank Name</label>
+                        <input type="text" id="bankName" name="bank_name">
+                    </div>
+                    <div class="form-group">
+                        <label for="accountNumber">Account Number</label>
+                        <input type="text" id="accountNumber" name="bank_account_number">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" onclick="closeModal('employeeModal')" class="btn btn-secondary">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add Employee</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for Creating Payroll -->
+    <div id="payrollModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Create Payroll Entry</h3>
+                <span class="close" onclick="closeModal('payrollModal')">&times;</span>
+            </div>
+            <form id="createPayrollForm">
+                <div class="form-group">
+                    <label for="payrollEmployee">Employee</label>
+                    <select id="payrollEmployee" name="employee" required>
+                        <option value="">Select an employee</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="attendanceDays">Attendance Days</label>
+                        <input type="number" id="attendanceDays" name="attendance_days" min="0" max="31" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="payrollMonth">Month</label>
+                        <select id="payrollMonth" name="month" required>
+                            <option value="1">January</option>
+                            <option value="2">February</option>
+                            <option value="3">March</option>
+                            <option value="4">April</option>
+                            <option value="5">May</option>
+                            <option value="6">June</option>
+                            <option value="7">July</option>
+                            <option value="8">August</option>
+                            <option value="9">September</option>
+                            <option value="10">October</option>
+                            <option value="11">November</option>
+                            <option value="12">December</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="payrollYear">Year</label>
+                        <select id="payrollYear" name="year" required>
+                            <option value="2024">2024</option>
+                            <option value="2025">2025</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="bonus">Bonus</label>
+                        <input type="number" id="bonus" name="bonus" step="0.01" min="0" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="deductions">Deductions</label>
+                        <input type="number" id="deductions" name="deductions" step="0.01" min="0" value="0">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="paymentDate">Payment Date (Optional)</label>
+                    <input type="date" id="paymentDate" name="payment_date">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" onclick="closeModal('payrollModal')" class="btn btn-secondary">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Create Payroll</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+    <script>
+        // Check authentication
+        checkAuth('HR');
+
+        // Set user name
+        document.getElementById('userName').textContent = localStorage.getItem('firstName') + ' ' + localStorage.getItem('lastName');
+
+        // Set current month and year
+        const now = new Date();
+        document.getElementById('monthFilter').value = now.getMonth() + 1;
+        document.getElementById('yearFilter').value = now.getFullYear();
+        document.getElementById('payrollMonth').value = now.getMonth() + 1;
+        document.getElementById('payrollYear').value = now.getFullYear();
+
+        // Sidebar navigation
+        document.querySelectorAll('.sidebar-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const section = this.dataset.section;
+                
+                // Remove active class from all links and sections
+                document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+                document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+                
+                // Add active class to clicked link and corresponding section
+                this.classList.add('active');
+                document.getElementById(section + '-section').classList.add('active');
+                
+                // Load data for the section
+                loadSectionData(section);
+            });
+        });
+
+        // Load dashboard data on page load
+        loadDashboardStats();
+        loadSectionData('dashboard');
+
+        async function loadDashboardStats() {
+            try {
+                const response = await apiCall('/api/dashboard/stats/');
+                if (response.ok) {
+                    const stats = await response.json();
+                    document.getElementById('totalEmployees').textContent = stats.total_employees || 0;
+                    document.getElementById('pendingPayrolls').textContent = stats.pending_payrolls || 0;
+                    document.getElementById('approvedPayrolls').textContent = stats.approved_payrolls || 0;
+                    document.getElementById('totalPayrollAmount').textContent = '$' + (stats.total_payroll_amount || 0).toLocaleString();
+                }
+            } catch (error) {
+                console.error('Error loading dashboard stats:', error);
+            }
+        }
+
+        async function loadSectionData(section) {
+            switch(section) {
+                case 'employees':
+                    await loadEmployees();
+                    break;
+                case 'payroll':
+                    await loadPayrolls();
+                    break;
+                case 'notifications':
+                    await loadNotifications();
+                    break;
+            }
+        }
+
+        async function loadEmployees() {
+            try {
+                const response = await apiCall('/api/employees/');
+                if (response.ok) {
+                    const employees = await response.json();
+                    const tbody = document.getElementById('employeesTableBody');
+                    tbody.innerHTML = employees.results ? employees.results.map(employee => `
+                        <tr>
+                            <td>${employee.id}</td>
+                            <td>${employee.full_name}</td>
+                            <td>${employee.role}</td>
+                            <td>$${parseFloat(employee.base_salary).toLocaleString()}</td>
+                            <td>${employee.phone}</td>
+                            <td><span class="status ${employee.is_active ? 'active' : 'inactive'}">${employee.is_active ? 'Active' : 'Inactive'}</span></td>
+                            <td>
+                                <button onclick="editEmployee(${employee.id})" class="btn btn-sm">Edit</button>
+                            </td>
+                        </tr>
+                    `).join('') : '<tr><td colspan="7">No employees found</td></tr>';
+                    
+                    // Update employee dropdown in payroll modal
+                    const employeeSelect = document.getElementById('payrollEmployee');
+                    employeeSelect.innerHTML = '<option value="">Select an employee</option>' + 
+                        (employees.results || []).map(emp => `<option value="${emp.id}">${emp.full_name}</option>`).join('');
+                }
+            } catch (error) {
+                console.error('Error loading employees:', error);
+            }
+        }
+
+        async function loadPayrolls() {
+            const month = document.getElementById('monthFilter').value;
+            const year = document.getElementById('yearFilter').value;
+            
+            try {
+                const response = await apiCall(`/api/payrolls/?month=${month}&year=${year}`);
+                if (response.ok) {
+                    const payrolls = await response.json();
+                    const tbody = document.getElementById('payrollTableBody');
+                    tbody.innerHTML = payrolls.results ? payrolls.results.map(payroll => `
+                        <tr>
+                            <td>${payroll.employee_name}</td>
+                            <td>$${parseFloat(payroll.employee.base_salary || 0).toLocaleString()}</td>
+                            <td>${payroll.attendance_days}</td>
+                            <td>$${parseFloat(payroll.bonus).toLocaleString()}</td>
+                            <td>$${parseFloat(payroll.deductions).toLocaleString()}</td>
+                            <td>$${parseFloat(payroll.final_salary).toLocaleString()}</td>
+                            <td><span class="status ${payroll.status.toLowerCase()}">${payroll.status}</span></td>
+                            <td>
+                                ${payroll.status === 'Pending' ? `<button onclick="editPayroll(${payroll.id})" class="btn btn-sm">Edit</button>` : ''}
+                            </td>
+                        </tr>
+                    `).join('') : '<tr><td colspan="8">No payrolls found for selected period</td></tr>';
+                }
+            } catch (error) {
+                console.error('Error loading payrolls:', error);
+            }
+        }
+
+        async function loadNotifications() {
+            try {
+                const response = await apiCall('/api/notifications/');
+                if (response.ok) {
+                    const notifications = await response.json();
+                    const container = document.getElementById('notificationsList');
+                    container.innerHTML = notifications.results ? notifications.results.map(notification => `
+                        <div class="notification-item ${notification.is_read ? 'read' : 'unread'}">
+                            <div class="notification-content">
+                                <p>${notification.message}</p>
+                                <small>${new Date(notification.sent_at).toLocaleString()}</small>
+                            </div>
+                            ${!notification.is_read ? `<button onclick="markAsRead(${notification.id})" class="btn btn-sm">Mark as Read</button>` : ''}
+                        </div>
+                    `).join('') : '<p>No notifications found</p>';
+                }
+            } catch (error) {
+                console.error('Error loading notifications:', error);
+            }
+        }
+
+        function showCreateEmployeeForm() {
+            document.getElementById('employeeModal').style.display = 'block';
+        }
+
+        function showCreatePayrollForm() {
+            loadEmployees(); // Refresh employee list
+            document.getElementById('payrollModal').style.display = 'block';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // Handle employee creation form
+        document.getElementById('createEmployeeForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const employeeData = {
+                user: parseInt(formData.get('user')), // This should be user ID
+                phone: formData.get('phone'),
+                role: formData.get('role'),
+                base_salary: formData.get('base_salary'),
+                bank_name: formData.get('bank_name'),
+                bank_account_number: formData.get('bank_account_number')
+            };
+
+            try {
+                const response = await apiCall('/api/employees/', {
+                    method: 'POST',
+                    body: JSON.stringify(employeeData)
+                });
+
+                if (response.ok) {
+                    alert('Employee added successfully!');
+                    closeModal('employeeModal');
+                    loadEmployees();
+                    e.target.reset();
+                } else {
+                    const error = await response.json();
+                    alert('Error adding employee: ' + (error.detail || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error('Error adding employee:', error);
+                alert('Error adding employee');
+            }
+        });
+
+        // Handle payroll creation form
+        document.getElementById('createPayrollForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const payrollData = {
+                employee: parseInt(formData.get('employee')),
+                attendance_days: parseInt(formData.get('attendance_days')),
+                bonus: formData.get('bonus') || '0.00',
+                deductions: formData.get('deductions') || '0.00',
+                month: parseInt(formData.get('month')),
+                year: parseInt(formData.get('year')),
+                payment_date: formData.get('payment_date') || null
+            };
+
+            try {
+                const response = await apiCall('/api/payrolls/', {
+                    method: 'POST',
+                    body: JSON.stringify(payrollData)
+                });
+
+                if (response.ok) {
+                    alert('Payroll created successfully!');
+                    closeModal('payrollModal');
+                    loadPayrolls();
+                    e.target.reset();
+                } else {
+                    const error = await response.json();
+                    alert('Error creating payroll: ' + (error.detail || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error('Error creating payroll:', error);
+                alert('Error creating payroll');
+            }
+        });
+
+        function editEmployee(id) {
+            alert('Edit employee functionality would be implemented here');
+        }
+
+        function editPayroll(id) {
+            alert('Edit payroll functionality would be implemented here');
+        }
+
+        async function markAsRead(id) {
+            try {
+                const response = await apiCall(`/api/notifications/${id}/mark_as_read/`, {
+                    method: 'POST'
+                });
+
+                if (response.ok) {
+                    loadNotifications();
+                }
+            } catch (error) {
+                console.error('Error marking notification as read:', error);
+            }
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

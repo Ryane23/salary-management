@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication Testing - PayrollPro</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8fafc;
+            color: #334155;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            color: #1e293b;
+            margin-bottom: 10px;
+        }
+
+        .section {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .section h2 {
+            color: #1e293b;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 24px;
+        }
+
+        .card {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            background: #f8fafc;
+        }
+
+        .card h3 {
+            color: #1e293b;
+            margin-bottom: 16px;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border-radius: 6px;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            margin: 8px 8px 8px 0;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2563eb;
+        }
+
+        .btn-success {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+        }
+
+        .btn-warning {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background: #d97706;
+        }
+
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        .input-group {
+            margin-bottom: 16px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+
+        .result {
+            margin-top: 16px;
+            padding: 12px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .result.success {
+            background: #d1fae5;
+            border: 1px solid #10b981;
+            color: #065f46;
+        }
+
+        .result.error {
+            background: #fee2e2;
+            border: 1px solid #ef4444;
+            color: #991b1b;
+        }
+
+        .result.info {
+            background: #dbeafe;
+            border: 1px solid #3b82f6;
+            color: #1e40af;
+        }
+
+        .auth-status {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .auth-status.logged-in {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #10b981;
+        }
+
+        .auth-status.logged-out {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #ef4444;
+        }
+
+        .token-display {
+            background: #f3f4f6;
+            padding: 12px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            margin-top: 10px;
+            word-break: break-all;
+        }
+
+        .endpoint-info {
+            background: #f1f5f9;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 16px;
+            font-size: 14px;
+        }
+
+        .endpoint-info strong {
+            color: #1e293b;
+        }
+
+        .demo-credentials {
+            background: #fef3c7;
+            border: 1px solid #f59e0b;
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .demo-credentials h4 {
+            margin-top: 0;
+            color: #92400e;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔐 Authentication Testing Dashboard</h1>
+            <p>Test both public endpoints (no authentication) and protected endpoints (with token authentication)</p>
+        </div>
+
+        <!-- Authentication Status -->
+        <div class="section">
+            <h2>Authentication Status</h2>
+            <div id="authStatus" class="auth-status logged-out">
+                Not Authenticated
+            </div>
+            <div id="tokenDisplay" class="token-display" style="display: none;"></div>
+        </div>
+
+        <!-- Login Section -->
+        <div class="section">
+            <h2>🔑 Token Authentication</h2>
+            
+            <div class="demo-credentials">
+                <h4>Demo Credentials:</h4>
+                <p><strong>Username:</strong> admin | <strong>Password:</strong> admin123</p>
+                <p><strong>Username:</strong> hr_user | <strong>Password:</strong> hr123</p>
+                <p><strong>Username:</strong> director | <strong>Password:</strong> director123</p>
+            </div>
+
+            <div class="grid">
+                <div class="card">
+                    <h3>Get Authentication Token</h3>
+                    <div class="endpoint-info">
+                        <strong>POST</strong> /api/auth/token/<br>
+                        Returns JWT token for API access
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Username:</label>
+                        <input type="text" id="loginUsername" value="admin" placeholder="Enter username">
+                    </div>
+                    <div class="input-group">
+                        <label>Password:</label>
+                        <input type="password" id="loginPassword" value="admin123" placeholder="Enter password">
+                    </div>
+                    
+                    <button class="btn btn-primary" onclick="loginUser()">Get Token</button>
+                    <div id="loginResult" class="result"></div>
+                </div>
+
+                <div class="card">
+                    <h3>Token Operations</h3>
+                    <div class="endpoint-info">
+                        Token management operations
+                    </div>
+                    
+                    <button class="btn btn-success" onclick="verifyToken()">Verify Token</button>
+                    <button class="btn btn-danger" onclick="logoutUser()">Logout (Delete Token)</button>
+                    
+                    <div id="tokenOpsResult" class="result"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Public Endpoints (No Authentication) -->
+        <div class="section">
+            <h2>🌐 Public Endpoints (No Authentication Required)</h2>
+            
+            <div class="grid">
+                <div class="card">
+                    <h3>Database Connection Test</h3>
+                    <div class="endpoint-info">
+                        <strong>GET</strong> /api/test-db-public/<br>
+                        Tests database connectivity
+                    </div>
+                    <button class="btn btn-success" onclick="testPublicDB()">Test Database</button>
+                    <div id="publicDbResult" class="result"></div>
+                </div>
+
+                <div class="card">
+                    <h3>Employee Data (Public)</h3>
+                    <div class="endpoint-info">
+                        <strong>GET</strong> /api/employees-public/<br>
+                        Get all employee data without authentication
+                    </div>
+                    <button class="btn btn-success" onclick="getPublicEmployees()">Get Employees</button>
+                    <div id="publicEmployeesResult" class="result"></div>
+                </div>
+
+                <div class="card">
+                    <h3>Department Statistics (Public)</h3>
+                    <div class="endpoint-info">
+                        <strong>GET</strong> /api/departments-public/<br>
+                        Get department breakdown without authentication
+                    </div>
+                    <button class="btn btn-success" onclick="getPublicDepartments()">Get Departments</button>
+                    <div id="publicDepartmentsResult" class="result"></div>
+                </div>
+
+                <div class="card">
+                    <h3>Dashboard Stats (Public)</h3>
+                    <div class="endpoint-info">
+                        <strong>GET</strong> /api/dashboard-stats-public/<br>
+                        Get dashboard statistics without authentication
+                    </div>
+                    <button class="btn btn-success" onclick="getPublicDashboardStats()">Get Dashboard Stats</button>
+                    <div id="publicDashboardResult" class="result"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Protected Endpoints (Authentication Required) -->
+        <div class="section">
+            <h2>🔒 Protected Endpoints (Authentication Required)</h2>
+            
+            <div class="grid">
+                <div class="card">
+                    <h3>Employee Management (Protected)</h3>
+                    <div class="endpoint-info">
+                        <strong>GET</strong> /api/employee-management/<br>
+                        Requires: Authorization: Token &lt;your_token&gt;
+                    </div>
+                    <button class="btn btn-warning" onclick="getProtectedEmployees()">Get Employees (Auth)</button>
+                    <div id="protectedEmployeesResult" class="result"></div>
+                </div>
+
+                <div class="card">
+                    <h3>Dashboard Stats (Protected)</h3>
+                    <div class="endpoint-info">
+                        <strong>GET</strong> /api/dashboard-stats/<br>
+                        Requires: Authorization: Token &lt;your_token&gt;
+                    </div>
+                    <button class="btn btn-warning" onclick="getProtectedDashboard()">Get Dashboard (Auth)</button>
+                    <div id="protectedDashboardResult" class="result"></div>
+                </div>
+
+                <div class="card">
+                    <h3>User Management (Protected)</h3>
+                    <div class="endpoint-info">
+                        <strong>GET</strong> /api/user-management/<br>
+                        Requires: Authorization: Token &lt;your_token&gt;
+                    </div>
+                    <button class="btn btn-warning" onclick="getProtectedUsers()">Get Users (Auth)</button>
+                    <div id="protectedUsersResult" class="result"></div>
+                </div>
+
+                <div class="card">
+                    <h3>Company Profile (Protected)</h3>
+                    <div class="endpoint-info">
+                        <strong>GET</strong> /api/company-profile/<br>
+                        Requires: Authorization: Token &lt;your_token&gt;
+                    </div>
+                    <button class="btn btn-warning" onclick="getProtectedCompany()">Get Company (Auth)</button>
+                    <div id="protectedCompanyResult" class="result"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Test All Endpoints -->
+        <div class="section">
+            <h2>🚀 Bulk Testing</h2>
+            <div class="card">
+                <h3>Test All Endpoints</h3>
+                <p>Run comprehensive tests on all public and protected endpoints</p>
+                
+                <button class="btn btn-primary" onclick="testAllPublic()">Test All Public Endpoints</button>
+                <button class="btn btn-warning" onclick="testAllProtected()">Test All Protected Endpoints</button>
+                
+                <div id="bulkTestResult" class="result"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://127.0.0.1:8000/api';
+        let currentToken = localStorage.getItem('authToken') || null;
+
+        // Update authentication status display
+        function updateAuthStatus() {
+            const statusEl = document.getElementById('authStatus');
+            const tokenEl = document.getElementById('tokenDisplay');
+            
+            if (currentToken) {
+                statusEl.textContent = '✅ Authenticated with Token';
+                statusEl.className = 'auth-status logged-in';
+                tokenEl.textContent = `Token: ${currentToken}`;
+                tokenEl.style.display = 'block';
+            } else {
+                statusEl.textContent = '❌ Not Authenticated';
+                statusEl.className = 'auth-status logged-out';
+                tokenEl.style.display = 'none';
+            }
+        }
+
+        // Helper function to display results
+        function showResult(elementId, data, isError = false) {
+            const resultEl = document.getElementById(elementId);
+            resultEl.style.display = 'block';
+            resultEl.className = `result ${isError ? 'error' : 'success'}`;
+            resultEl.textContent = typeof data === 'string' ? data : JSON.stringify(data, null, 2);
+        }
+
+        // Authentication Functions
+        async function loginUser() {
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            try {
+                const response = await fetch(`${API_BASE}/auth/token/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    currentToken = data.token;
+                    localStorage.setItem('authToken', currentToken);
+                    updateAuthStatus();
+                    showResult('loginResult', data);
+                } else {
+                    showResult('loginResult', data, true);
+                }
+            } catch (error) {
+                showResult('loginResult', `Network Error: ${error.message}`, true);
+            }
+        }
+
+        async function verifyToken() {
+            if (!currentToken) {
+                showResult('tokenOpsResult', 'No token available. Please login first.', true);
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE}/auth/verify/`, {
+                    headers: {
+                        'Authorization': `Token ${currentToken}`,
+                        'Content-Type': 'application/json',
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    showResult('tokenOpsResult', data);
+                } else {
+                    showResult('tokenOpsResult', data, true);
+                }
+            } catch (error) {
+                showResult('tokenOpsResult', `Network Error: ${error.message}`, true);
+            }
+        }
+
+        async function logoutUser() {
+            if (!currentToken) {
+                showResult('tokenOpsResult', 'No token to logout. Already logged out.', true);
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE}/auth/logout-token/`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Token ${currentToken}`,
+                        'Content-Type': 'application/json',
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    currentToken = null;
+                    localStorage.removeItem('authToken');
+                    updateAuthStatus();
+                    showResult('tokenOpsResult', data);
+                } else {
+                    showResult('tokenOpsResult', data, true);
+                }
+            } catch (error) {
+                showResult('tokenOpsResult', `Network Error: ${error.message}`, true);
+            }
+        }
+
+        // Public Endpoint Functions
+        async function testPublicDB() {
+            try {
+                const response = await fetch(`${API_BASE}/test-db-public/`);
+                const data = await response.json();
+                showResult('publicDbResult', data, !response.ok);
+            } catch (error) {
+                showResult('publicDbResult', `Network Error: ${error.message}`, true);
+            }
+        }
+
+        async function getPublicEmployees() {
+            try {
+                const response = await fetch(`${API_BASE}/employees-public/`);
+                const data = await response.json();
+                showResult('publicEmployeesResult', data, !response.ok);
+            } catch (error) {
+                showResult('publicEmployeesResult', `Network Error: ${error.message}`, true);
+            }
+        }
+
+        async function getPublicDepartments() {
+            try {
+                const response = await fetch(`${API_BASE}/departments-public/`);
+                const data = await response.json();
+                showResult('publicDepartmentsResult', data, !response.ok);
+            } catch (error) {
+                showResult('publicDepartmentsResult', `Network Error: ${error.message}`, true);
+            }
+        }
+
+        async function getPublicDashboardStats() {
+            try {
+                const response = await fetch(`${API_BASE}/dashboard-stats-public/`);
+                const data = await response.json();
+                showResult('publicDashboardResult', data, !response.ok);
+            } catch (error) {
+                showResult('publicDashboardResult', `Network Error: ${error.message}`, true);
+            }
+        }
+
+        // Protected Endpoint Functions
+        async function getProtectedEmployees() {
+            if (!currentToken) {
+                showResult('protectedEmployeesResult', 'Authentication required. Please login first.', true);
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE}/employee-management/`, {
+                    headers: {
+                        'Authorization': `Token ${currentToken}`,
+                        'Content-Type': 'application/json',
+                    }
+                });
+                const data = await response.json();
+                showResult('protectedEmployeesResult', data, !response.ok);
+            } catch (error) {
+                showResult('protectedEmployeesResult', `Network Error: ${error.message}`, true);
+            }
+        }
+
+        async function getProtectedDashboard() {
+            if (!currentToken) {
+                showResult('protectedDashboardResult', 'Authentication required. Please login first.', true);
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE}/dashboard-stats/`, {
+                    headers: {
+                        'Authorization': `Token ${currentToken}`,
+                        'Content-Type': 'application/json',
+                    }
+                });
+                const data = await response.json();
+                showResult('protectedDashboardResult', data, !response.ok);
+            } catch (error) {
+                showResult('protectedDashboardResult', `Network Error: ${error.message}`, true);
+            }
+        }
+
+        async function getProtectedUsers() {
+            if (!currentToken) {
+                showResult('protectedUsersResult', 'Authentication required. Please login first.', true);
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE}/user-management/`, {
+                    headers: {
+                        'Authorization': `Token ${currentToken}`,
+                        'Content-Type': 'application/json',
+                    }
+                });
+                const data = await response.json();
+                showResult('protectedUsersResult', data, !response.ok);
+            } catch (error) {
+                showResult('protectedUsersResult', `Network Error: ${error.message}`, true);
+            }
+        }
+
+        async function getProtectedCompany() {
+            if (!currentToken) {
+                showResult('protectedCompanyResult', 'Authentication required. Please login first.', true);
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE}/company-profile/`, {
+                    headers: {
+                        'Authorization': `Token ${currentToken}`,
+                        'Content-Type': 'application/json',
+                    }
+                });
+                const data = await response.json();
+                showResult('protectedCompanyResult', data, !response.ok);
+            } catch (error) {
+                showResult('protectedCompanyResult', `Network Error: ${error.message}`, true);
+            }
+        }
+
+        // Bulk Testing Functions
+        async function testAllPublic() {
+            showResult('bulkTestResult', 'Testing all public endpoints...', false);
+            
+            const endpoints = [
+                { name: 'Database Test', url: `${API_BASE}/test-db-public/` },
+                { name: 'Public Employees', url: `${API_BASE}/employees-public/` },
+                { name: 'Public Departments', url: `${API_BASE}/departments-public/` },
+                { name: 'Public Dashboard Stats', url: `${API_BASE}/dashboard-stats-public/` }
+            ];
+            
+            let results = [];
+            
+            for (const endpoint of endpoints) {
+                try {
+                    const response = await fetch(endpoint.url);
+                    const data = await response.json();
+                    results.push(`✅ ${endpoint.name}: ${response.status} ${response.statusText}`);
+                } catch (error) {
+                    results.push(`❌ ${endpoint.name}: Network Error - ${error.message}`);
+                }
+            }
+            
+            showResult('bulkTestResult', results.join('\n'));
+        }
+
+        async function testAllProtected() {
+            if (!currentToken) {
+                showResult('bulkTestResult', 'Authentication required. Please login first.', true);
+                return;
+            }
+            
+            showResult('bulkTestResult', 'Testing all protected endpoints...', false);
+            
+            const endpoints = [
+                { name: 'Protected Employees', url: `${API_BASE}/employee-management/` },
+                { name: 'Protected Dashboard', url: `${API_BASE}/dashboard-stats/` },
+                { name: 'Protected Users', url: `${API_BASE}/user-management/` },
+                { name: 'Protected Company', url: `${API_BASE}/company-profile/` }
+            ];
+            
+            let results = [];
+            
+            for (const endpoint of endpoints) {
+                try {
+                    const response = await fetch(endpoint.url, {
+                        headers: {
+                            'Authorization': `Token ${currentToken}`,
+                            'Content-Type': 'application/json',
+                        }
+                    });
+                    const data = await response.json();
+                    results.push(`✅ ${endpoint.name}: ${response.status} ${response.statusText}`);
+                } catch (error) {
+                    results.push(`❌ ${endpoint.name}: Network Error - ${error.message}`);
+                }
+            }
+            
+            showResult('bulkTestResult', results.join('\n'));
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateAuthStatus();
+        });
+    </script>
+</body>
+</html>

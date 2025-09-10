@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - PayrollPro</title>
+    <!-- Link to our clean, minimal stylesheet -->
+    <link rel="stylesheet" href="simple_styles.css">
+    <!-- Font Awesome for professional icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- 
+        SIGNUP PAGE
+        ===========
+        This page allows new users to create accounts in the payroll system.
+        Features:
+        - Centered form with clean design
+        - Input validation and error handling
+        - Role selection for system access
+        - Connection to Django API for registration
+    -->
+    
+    <!-- Simple Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <!-- Logo/Brand -->
+            <a href="index.html" class="nav-logo">
+                <i class="fas fa-coins"></i>
+                <span>PayrollPro</span>
+            </a>
+            
+            <!-- Navigation Links -->
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="login.html" class="nav-link">Login</a></li>
+                <li><a href="signup.html" class="nav-link active">Sign Up</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+        <!-- 
+            CENTERED SIGNUP FORM
+            ====================
+            Form is centered on page with bordered box and shadow
+            Includes all necessary fields for user registration
+            Connected to Django API for account creation
+        -->
+        <div class="auth-container">
+            <div class="auth-box">
+                <!-- Form Header -->
+                <div class="auth-header">
+                    <div class="auth-logo">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <h2>Create Account</h2>
+                    <p>Join PayrollPro to manage your salary and payments</p>
+                </div>
+
+                <!-- Message Container for Success/Error Messages -->
+                <div id="messageContainer" class="message-container">
+                    <!-- Messages will be displayed here by JavaScript -->
+                </div>
+
+                <!-- Signup Form -->
+                <form class="auth-form" id="signupForm">
+                    <!-- Name Fields Row -->
+                    <div class="form-row">
+                        <!-- First Name Field -->
+                        <div class="form-group">
+                            <label for="firstName">
+                                <i class="fas fa-user"></i> First Name
+                            </label>
+                            <input 
+                                type="text" 
+                                id="firstName" 
+                                name="firstName" 
+                                required 
+                                placeholder="Enter first name"
+                                autocomplete="given-name"
+                            >
+                            <!-- Error message will be shown here -->
+                            <div class="field-error" id="firstNameError"></div>
+                        </div>
+
+                        <!-- Last Name Field -->
+                        <div class="form-group">
+                            <label for="lastName">
+                                <i class="fas fa-user"></i> Last Name
+                            </label>
+                            <input 
+                                type="text" 
+                                id="lastName" 
+                                name="lastName" 
+                                required 
+                                placeholder="Enter last name"
+                                autocomplete="family-name"
+                            >
+                            <!-- Error message will be shown here -->
+                            <div class="field-error" id="lastNameError"></div>
+                        </div>
+                    </div>
+
+                    <!-- Username Field -->
+                    <div class="form-group">
+                        <label for="username">
+                            <i class="fas fa-at"></i> Username
+                        </label>
+                        <input 
+                            type="text" 
+                            id="username" 
+                            name="username" 
+                            required 
+                            placeholder="Choose a username"
+                            autocomplete="username"
+                        >
+                        <!-- Error message will be shown here -->
+                        <div class="field-error" id="usernameError"></div>
+                    </div>
+
+                    <!-- Email Field -->
+                    <div class="form-group">
+                        <label for="email">
+                            <i class="fas fa-envelope"></i> Email Address
+                        </label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            required 
+                            placeholder="Enter email address"
+                            autocomplete="email"
+                        >
+                        <!-- Error message will be shown here -->
+                        <div class="field-error" id="emailError"></div>
+                    </div>
+
+                    <!-- Role Selection -->
+                    <div class="form-group">
+                        <label for="role">
+                            <i class="fas fa-user-tag"></i> Role
+                        </label>
+                        <select id="role" name="role" required>
+                            <option value="">Select your role</option>
+                            <option value="HR">HR Manager</option>
+                            <option value="Director">Director</option>
+                            <option value="Admin">System Administrator</option>
+                        </select>
+                        <!-- Error message will be shown here -->
+                        <div class="field-error" id="roleError"></div>
+                    </div>
+
+                    <!-- Password Fields Row -->
+                    <div class="form-row">
+                        <!-- Password Field -->
+                        <div class="form-group">
+                            <label for="password">
+                                <i class="fas fa-lock"></i> Password
+                            </label>
+                            <input 
+                                type="password" 
+                                id="password" 
+                                name="password" 
+                                required 
+                                placeholder="Create password"
+                                autocomplete="new-password"
+                            >
+                            <!-- Error message will be shown here -->
+                            <div class="field-error" id="passwordError"></div>
+                        </div>
+
+                        <!-- Confirm Password Field -->
+                        <div class="form-group">
+                            <label for="confirmPassword">
+                                <i class="fas fa-lock"></i> Confirm Password
+                            </label>
+                            <input 
+                                type="password" 
+                                id="confirmPassword" 
+                                name="confirmPassword" 
+                                required 
+                                placeholder="Confirm password"
+                                autocomplete="new-password"
+                            >
+                            <!-- Error message will be shown here -->
+                            <div class="field-error" id="confirmPasswordError"></div>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn btn-primary btn-full" id="signupBtn">
+                        <i class="fas fa-user-plus"></i>
+                        Create Account
+                    </button>
+                </form>
+
+                <!-- Login Link -->
+                <div class="auth-footer">
+                    <p>Already have an account? 
+                        <a href="login.html" class="auth-link">Sign in here</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- JavaScript Files -->
+    <script src="main.js"></script>
+    
+    <script>
+        /* ================================
+           SIGNUP PAGE SCRIPT
+           ================================
+           Handles user registration with:
+           - Form validation
+           - API communication
+           - Error handling
+           - Success redirects
+        */
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Signup page loaded');
+            
+            // Get form elements
+            const signupForm = document.getElementById('signupForm');
+            const signupBtn = document.getElementById('signupBtn');
+            
+            // Set up form submission handler
+            signupForm.addEventListener('submit', handleSignupSubmit);
+            
+            // Set up real-time validation
+            setupRealtimeValidation();
+            
+            console.log('Signup form initialized');
+        });
+        
+        /**
+         * Handle signup form submission
+         * Validates input and sends registration request to Django API
+         * @param {Event} event - Form submit event
+         */
+        async function handleSignupSubmit(event) {
+            event.preventDefault();
+            
+            console.log('Signup form submitted');
+            
+            // Clear previous messages and errors
+            clearMessages();
+            clearFieldErrors();
+            
+            // Get form data
+            const formData = {
+                firstName: document.getElementById('firstName').value.trim(),
+                lastName: document.getElementById('lastName').value.trim(),
+                username: document.getElementById('username').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                role: document.getElementById('role').value,
+                password: document.getElementById('password').value,
+                confirmPassword: document.getElementById('confirmPassword').value
+            };
+            
+            // Validate form data
+            const validation = validateSignupData(formData);
+            if (!validation.isValid) {
+                displayValidationErrors(validation.errors);
+                return;
+            }
+            
+            try {
+                // Show loading state
+                setButtonLoading('signupBtn', true, 'Creating Account...');
+                
+                // Prepare data for Django API
+                const apiData = {
+                    username: formData.username,
+                    email: formData.email,
+                    password: formData.password,
+                    first_names: formData.firstName,  // Note: Dashboard.User uses first_names
+                    last_names: formData.lastName,    // Note: Dashboard.User uses last_names
+                    phone_number: '0000000000',       // Default phone number
+                    role: formData.role
+                };
+                
+                // Send registration request to Django API
+                const response = await apiCall('/auth/signup/', {
+                    method: 'POST',
+                    body: JSON.stringify(apiData)
+                });
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    
+                    // Show success message
+                    showMessage('Account created successfully! Please login to continue.', 'success');
+                    
+                    // Redirect to login page after delay
+                    setTimeout(() => {
+                        window.location.href = 'login.html';
+                    }, 2000);
+                    
+                } else {
+                    // Handle API errors
+                    const errorData = await response.json();
+                    handleSignupErrors(errorData);
+                }
+                
+            } catch (error) {
+                console.error('Signup error:', error);
+                showMessage('Registration failed. Please check your connection and try again.', 'error');
+            } finally {
+                // Reset button state
+                setButtonLoading('signupBtn', false);
+            }
+        }
+        
+        /**
+         * Validate signup form data
+         * @param {Object} data - Form data object
+         * @returns {Object} Validation result
+         */
+        function validateSignupData(data) {
+            const errors = {};
+            let isValid = true;
+            
+            // First name validation
+            if (!data.firstName) {
+                errors.firstName = 'First name is required';
+                isValid = false;
+            } else if (data.firstName.length < 2) {
+                errors.firstName = 'First name must be at least 2 characters';
+                isValid = false;
+            }
+            
+            // Last name validation
+            if (!data.lastName) {
+                errors.lastName = 'Last name is required';
+                isValid = false;
+            } else if (data.lastName.length < 2) {
+                errors.lastName = 'Last name must be at least 2 characters';
+                isValid = false;
+            }
+            
+            // Username validation
+            if (!data.username) {
+                errors.username = 'Username is required';
+                isValid = false;
+            } else if (data.username.length < 3) {
+                errors.username = 'Username must be at least 3 characters';
+                isValid = false;
+            } else if (!/^[a-zA-Z0-9_]+$/.test(data.username)) {
+                errors.username = 'Username can only contain letters, numbers, and underscores';
+                isValid = false;
+            }
+            
+            // Email validation
+            if (!data.email) {
+                errors.email = 'Email is required';
+                isValid = false;
+            } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
+                errors.email = 'Please enter a valid email address';
+                isValid = false;
+            }
+            
+            // Role validation
+            if (!data.role) {
+                errors.role = 'Please select a role';
+                isValid = false;
+            }
+            
+            // Password validation
+            if (!data.password) {
+                errors.password = 'Password is required';
+                isValid = false;
+            } else if (data.password.length < 8) {
+                errors.password = 'Password must be at least 8 characters';
+                isValid = false;
+            }
+            
+            // Confirm password validation
+            if (!data.confirmPassword) {
+                errors.confirmPassword = 'Please confirm your password';
+                isValid = false;
+            } else if (data.password !== data.confirmPassword) {
+                errors.confirmPassword = 'Passwords do not match';
+                isValid = false;
+            }
+            
+            return { isValid, errors };
+        }
+        
+        /**
+         * Display validation errors in form fields
+         * @param {Object} errors - Errors object with field names as keys
+         */
+        function displayValidationErrors(errors) {
+            for (const [field, message] of Object.entries(errors)) {
+                showFieldError(field, message);
+            }
+            
+            // Show general error message
+            showMessage('Please correct the errors below and try again.', 'error');
+        }
+        
+        /**
+         * Handle API errors from Django backend
+         * @param {Object} errorData - Error response from API
+         */
+        function handleSignupErrors(errorData) {
+            console.error('Signup API errors:', errorData);
+            
+            // Handle field-specific errors
+            if (errorData.username) {
+                showFieldError('username', Array.isArray(errorData.username) ? errorData.username[0] : errorData.username);
+            }
+            if (errorData.email) {
+                showFieldError('email', Array.isArray(errorData.email) ? errorData.email[0] : errorData.email);
+            }
+            if (errorData.password) {
+                showFieldError('password', Array.isArray(errorData.password) ? errorData.password[0] : errorData.password);
+            }
+            
+            // Show general error message
+            const generalMessage = errorData.detail || errorData.message || 'Registration failed. Please try again.';
+            showMessage(generalMessage, 'error');
+        }
+        
+        /**
+         * Set up real-time validation for form fields
+         * Provides immediate feedback as user types
+         */
+        function setupRealtimeValidation() {
+            // Password confirmation check
+            const passwordInput = document.getElementById('password');
+            const confirmPasswordInput = document.getElementById('confirmPassword');
+            
+            if (confirmPasswordInput) {
+                confirmPasswordInput.addEventListener('input', function() {
+                    const password = passwordInput.value;
+                    const confirmPassword = this.value;
+                    
+                    if (confirmPassword && password !== confirmPassword) {
+                        showFieldError('confirmPassword', 'Passwords do not match');
+                    } else {
+                        showFieldError('confirmPassword', '');
+                    }
+                });
+            }
+        }
+        
+        /**
+         * Show field-specific error message
+         * @param {string} fieldName - Name of the field
+         * @param {string} message - Error message to display
+         */
+        function showFieldError(fieldName, message) {
+            const errorElement = document.getElementById(`${fieldName}Error`);
+            if (errorElement) {
+                errorElement.textContent = message;
+                errorElement.style.display = message ? 'block' : 'none';
+            }
+        }
+        
+        /**
+         * Clear all field error messages
+         */
+        function clearFieldErrors() {
+            const errorElements = document.querySelectorAll('.field-error');
+            errorElements.forEach(element => {
+                element.textContent = '';
+                element.style.display = 'none';
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta tags for proper responsive design -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Salary Management System</title>
+    
+    <!-- Link to our simple, clean stylesheet -->
+    <link rel="stylesheet" href="simple_styles.css">
+    <!-- Font Awesome for professional icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- =================================================================== -->
+    <!-- NAVIGATION HEADER - Clean and professional top navigation bar -->
+    <!-- =================================================================== -->
+    <nav class="navbar">
+        <div class="container">
+            <!-- Company logo and name -->
+            <div class="nav-brand">
+                <i class="fas fa-coins"></i>
+                <span>Salary Management</span>
+            </div>
+            
+            <!-- Navigation menu items -->
+            <ul class="nav-menu">
+                <li><a href="home.html" class="nav-link active">Home</a></li>
+                <li><a href="#features" class="nav-link">Features</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="login.html" class="nav-link">Login</a></li>
+                <li><a href="signup.html" class="btn btn-primary">Sign Up</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- =================================================================== -->
+    <!-- HERO SECTION - Main welcome area with call-to-action -->
+    <!-- =================================================================== -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Professional Salary Management System</h1>
+                <p>Streamline your payroll processes with our simple, clean, and efficient management platform.</p>
+                
+                <!-- Action buttons for getting started -->
+                <div class="hero-buttons">
+                    <a href="signup.html" class="btn btn-primary btn-large">Get Started</a>
+                    <a href="#features" class="btn btn-secondary btn-large">Learn More</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- SIMPLE SLIDES SECTION - Key features presentation -->
+    <!-- =================================================================== -->
+    <section class="slides-section">
+        <div class="container">
+            <h2 class="text-center">Why Choose Our System?</h2>
+            
+            <!-- Slide container with manual navigation -->
+            <div class="slides-container">
+                <!-- Slide 1: Role-based Access -->
+                <div class="slide active" id="slide1">
+                    <div class="slide-content">
+                        <div class="slide-icon">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                        <h3>Role-Based Access Control</h3>
+                        <p>Admin, HR, and Director roles with specific permissions. Secure access to sensitive payroll data.</p>
+                        <ul>
+                            <li><strong>Admin:</strong> Full system access and control</li>
+                            <li><strong>HR:</strong> Employee and payroll management</li>
+                            <li><strong>Director:</strong> Payroll validation and approval</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Slide 2: Automated Calculations -->
+                <div class="slide" id="slide2">
+                    <div class="slide-content">
+                        <div class="slide-icon">
+                            <i class="fas fa-calculator"></i>
+                        </div>
+                        <h3>Automated Salary Calculations</h3>
+                        <p>Automatic calculation of final salaries including bonuses and deductions. No manual errors.</p>
+                        <ul>
+                            <li>Base salary + bonuses - deductions</li>
+                            <li>Attendance-based calculations</li>
+                            <li>Real-time salary updates</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Slide 3: Company Management -->
+                <div class="slide" id="slide3">
+                    <div class="slide-content">
+                        <div class="slide-icon">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <h3>Company Bank Balance Tracking</h3>
+                        <p>Monitor company finances and ensure sufficient funds for payroll processing.</p>
+                        <ul>
+                            <li>Real-time bank balance monitoring</li>
+                            <li>Payroll affordability checks</li>
+                            <li>Financial reporting and analytics</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Simple slide navigation dots -->
+            <div class="slide-nav">
+                <button class="slide-dot active" onclick="showSlide(1)" data-slide="1"></button>
+                <button class="slide-dot" onclick="showSlide(2)" data-slide="2"></button>
+                <button class="slide-dot" onclick="showSlide(3)" data-slide="3"></button>
+            </div>
+        </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- FEATURES SECTION - Detailed feature list -->
+    <!-- =================================================================== -->
+    <section id="features" class="features">
+        <div class="container">
+            <h2 class="text-center">System Features</h2>
+            
+            <!-- Feature grid layout -->
+            <div class="features-grid">
+                <!-- Feature 1: Employee Management -->
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Employee Management</h3>
+                    <p>Comprehensive employee records with salary details, bank information, and role assignments.</p>
+                </div>
+
+                <!-- Feature 2: Payroll Processing -->
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-money-check-alt"></i>
+                    </div>
+                    <h3>Payroll Processing</h3>
+                    <p>Automated payroll calculations with approval workflow and payment tracking.</p>
+                </div>
+
+                <!-- Feature 3: Secure Access -->
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <h3>Secure Access</h3>
+                    <p>Role-based permissions ensure data security and proper access control.</p>
+                </div>
+
+                <!-- Feature 4: Real-time Reports -->
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <h3>Real-time Reports</h3>
+                    <p>Instant access to payroll reports, company finances, and employee analytics.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- ABOUT SECTION - Information about the system -->
+    <!-- =================================================================== -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="about-content">
+                <h2>About Our System</h2>
+                <p>
+                    Our Salary Management System is designed with simplicity and efficiency in mind. 
+                    Built using modern web technologies, it provides a clean, professional interface 
+                    for managing all aspects of payroll processing.
+                </p>
+                
+                <!-- Key system specifications -->
+                <div class="about-specs">
+                    <div class="spec-item">
+                        <strong>Backend:</strong> Django REST Framework for robust API development
+                    </div>
+                    <div class="spec-item">
+                        <strong>Frontend:</strong> Clean HTML, CSS, JavaScript - no complex frameworks
+                    </div>
+                    <div class="spec-item">
+                        <strong>Security:</strong> Role-based access control and secure authentication
+                    </div>
+                    <div class="spec-item">
+                        <strong>Design:</strong> Professional blue, white, and grey color scheme
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- FOOTER - Simple footer with contact information -->
+    <!-- =================================================================== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <i class="fas fa-coins"></i>
+                    <span>Salary Management System</span>
+                </div>
+                <p>&copy; 2025 Salary Management System. Professional payroll solutions.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- =================================================================== -->
+    <!-- JAVASCRIPT - Simple slide functionality and smooth scrolling -->
+    <!-- =================================================================== -->
+    <script>
+        // =================================================================
+        // SLIDE FUNCTIONALITY
+        // Simple manual slide navigation without complex animations
+        // =================================================================
+        
+        let currentSlide = 1; // Track current active slide
+        
+        /**
+         * Show specific slide and update navigation
+         * @param {number} slideNumber - The slide number to show (1, 2, or 3)
+         * 
+         * This function:
+         * 1. Hides all slides by removing 'active' class
+         * 2. Shows the selected slide by adding 'active' class
+         * 3. Updates navigation dots to reflect current slide
+         * 
+         * Error handling: If invalid slide number, defaults to slide 1
+         */
+        function showSlide(slideNumber) {
+            // Validate slide number - must be between 1 and 3
+            if (slideNumber < 1 || slideNumber > 3) {
+                console.warn('Invalid slide number:', slideNumber);
+                slideNumber = 1; // Default to first slide
+            }
+            
+            // Hide all slides by removing active class
+            const allSlides = document.querySelectorAll('.slide');
+            allSlides.forEach(slide => slide.classList.remove('active'));
+            
+            // Hide all navigation dots by removing active class
+            const allDots = document.querySelectorAll('.slide-dot');
+            allDots.forEach(dot => dot.classList.remove('active'));
+            
+            // Show the selected slide
+            const targetSlide = document.getElementById(`slide${slideNumber}`);
+            if (targetSlide) {
+                targetSlide.classList.add('active');
+            } else {
+                console.error('Slide not found:', `slide${slideNumber}`);
+            }
+            
+            // Highlight the corresponding navigation dot
+            const targetDot = document.querySelector(`.slide-dot[data-slide="${slideNumber}"]`);
+            if (targetDot) {
+                targetDot.classList.add('active');
+            }
+            
+            // Update current slide tracker
+            currentSlide = slideNumber;
+        }
+        
+        // =================================================================
+        // AUTO-ADVANCE SLIDES (Optional)
+        // Automatically advance slides every 5 seconds
+        // =================================================================
+        
+        /**
+         * Automatically advance to the next slide
+         * Loops back to slide 1 after slide 3
+         */
+        function autoAdvanceSlides() {
+            let nextSlide = currentSlide + 1;
+            if (nextSlide > 3) {
+                nextSlide = 1; // Loop back to first slide
+            }
+            showSlide(nextSlide);
+        }
+        
+        // Start auto-advance timer (uncomment to enable)
+        // setInterval(autoAdvanceSlides, 5000); // Advance every 5 seconds
+        
+        // =================================================================
+        // SMOOTH SCROLLING FOR NAVIGATION LINKS
+        // Provides smooth scrolling to page sections when clicking nav links
+        // =================================================================
+        
+        /**
+         * Initialize smooth scrolling for internal navigation links
+         * This runs when the page loads to set up event listeners
+         */
+        document.addEventListener('DOMContentLoaded', function() {
+            // Find all navigation links that point to page sections (start with #)
+            const navLinks = document.querySelectorAll('a[href^="#"]');
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault(); // Prevent default jump behavior
+                    
+                    // Get the target section ID from the href attribute
+                    const targetId = this.getAttribute('href').substring(1);
+                    const targetSection = document.getElementById(targetId);
+                    
+                    // Smooth scroll to the target section if it exists
+                    if (targetSection) {
+                        targetSection.scrollIntoView({
+                            behavior: 'smooth', // Smooth scrolling animation
+                            block: 'start'      // Align to top of viewport
+                        });
+                    } else {
+                        console.warn('Target section not found:', targetId);
+                    }
+                });
+            });
+        });
+        
+        // =================================================================
+        // NAVIGATION MENU TOGGLE (For mobile responsiveness if needed)
+        // Simple function to show/hide mobile menu
+        // =================================================================
+        
+        /**
+         * Toggle mobile navigation menu visibility
+         * Can be connected to a hamburger menu button
+         */
+        function toggleMobileMenu() {
+            const navMenu = document.querySelector('.nav-menu');
+            if (navMenu) {
+                navMenu.classList.toggle('active');
+            }
+        }
+    </script>
+</body>
+</html>

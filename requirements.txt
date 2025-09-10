@@ -1,0 +1,48 @@
+# Additional requirements for the Payroll Management System
+
+# Django REST Framework for API development
+djangorestframework>=3.14.0
+
+# Django CORS headers for frontend integration
+django-cors-headers>=4.3.0
+
+# Django Filter for API filtering
+django-filter>=23.0
+
+# For API documentation
+drf-spectacular>=0.26.0
+
+# For pagination improvements
+djangorestframework-pagination>=0.1.1
+
+# For better API testing
+factory-boy>=3.3.0
+
+# For SMS notifications (optional)
+# twilio>=8.5.0
+
+# For email backends (optional)
+# django-anymail>=10.0
+
+# For environment variable management
+python-decouple>=3.8
+
+# For better date/time handling
+python-dateutil>=2.8.0
+
+# For CSV imports/exports
+pandas>=2.0.0
+
+# For Excel file handling
+openpyxl>=3.1.0
+
+# For better validation
+django-phonenumber-field>=7.1.0
+phonenumbers>=8.13.0
+
+# For audit logging (optional)
+# django-auditlog>=2.2.0
+
+# For caching improvements
+redis>=4.6.0
+django-redis>=5.3.0

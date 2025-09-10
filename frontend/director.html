@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Director Dashboard - PayrollPro</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar dashboard-nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <h2>PayrollPro</h2>
+            </div>
+            <div class="nav-user">
+                <span id="userName">Director</span>
+                <button onclick="logout()" class="btn btn-sm">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h3>Director Panel</h3>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#dashboard" class="sidebar-link active" data-section="dashboard">
+                    <span class="sidebar-icon">📊</span>
+                    Dashboard
+                </a>
+                <a href="#approvals" class="sidebar-link" data-section="approvals">
+                    <span class="sidebar-icon">✅</span>
+                    Payroll Approvals
+                </a>
+                <a href="#funds" class="sidebar-link" data-section="funds">
+                    <span class="sidebar-icon">💰</span>
+                    Company Funds
+                </a>
+                <a href="#reports" class="sidebar-link" data-section="reports">
+                    <span class="sidebar-icon">📈</span>
+                    Reports
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Overview -->
+            <section id="dashboard-section" class="content-section active">
+                <div class="section-header">
+                    <h2>Director Dashboard</h2>
+                    <p>Approve payrolls and monitor company finances</p>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">⏳</div>
+                        <div class="stat-content">
+                            <h3 id="pendingPayrolls">-</h3>
+                            <p>Pending Approvals</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">✅</div>
+                        <div class="stat-content">
+                            <h3 id="approvedPayrolls">-</h3>
+                            <p>Approved Payrolls</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">💰</div>
+                        <div class="stat-content">
+                            <h3 id="companyBalance">-</h3>
+                            <p>Company Balance</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">👥</div>
+                        <div class="stat-content">
+                            <h3 id="totalEmployees">-</h3>
+                            <p>Active Employees</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <h3>Quick Actions</h3>
+                    <div class="action-buttons">
+                        <button onclick="showBulkApprovalModal()" class="btn btn-primary">
+                            <span>⚡</span>
+                            Bulk Approve Payrolls
+                        </button>
+                        <button onclick="loadSectionData('funds')" class="btn btn-secondary">
+                            <span>💰</span>
+                            Check Company Funds
+                        </button>
+                        <button onclick="exportReport()" class="btn btn-info">
+                            <span>📊</span>
+                            Export Report
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Payroll Approvals Section -->
+            <section id="approvals-section" class="content-section">
+                <div class="section-header">
+                    <h2>Payroll Approvals</h2>
+                    <div class="header-actions">
+                        <button onclick="showBulkApprovalModal()" class="btn btn-primary">Bulk Approve</button>
+                        <button onclick="loadPendingPayrolls()" class="btn btn-secondary">Refresh</button>
+                    </div>
+                </div>
+                
+                <div class="approval-filters">
+                    <div class="filter-group">
+                        <label for="statusFilter">Status:</label>
+                        <select id="statusFilter" onchange="loadPendingPayrolls()">
+                            <option value="">All</option>
+                            <option value="Pending" selected>Pending</option>
+                            <option value="Approved">Approved</option>
+                            <option value="Paid">Paid</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="monthFilterApproval">Month:</label>
+                        <select id="monthFilterApproval" onchange="loadPendingPayrolls()">
+                            <option value="">All Months</option>
+                            <option value="1">January</option>
+                            <option value="2">February</option>
+                            <option value="3">March</option>
+                            <option value="4">April</option>
+                            <option value="5">May</option>
+                            <option value="6">June</option>
+                            <option value="7">July</option>
+                            <option value="8">August</option>
+                            <option value="9">September</option>
+                            <option value="10">October</option>
+                            <option value="11">November</option>
+                            <option value="12">December</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <input type="checkbox" id="selectAll" onchange="toggleSelectAll()">
+                                </th>
+                                <th>Employee</th>
+                                <th>Role</th>
+                                <th>Base Salary</th>
+                                <th>Bonus</th>
+                                <th>Deductions</th>
+                                <th>Final Salary</th>
+                                <th>Month/Year</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="approvalsTableBody">
+                            <!-- Payrolls will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Company Funds Section -->
+            <section id="funds-section" class="content-section">
+                <div class="section-header">
+                    <h2>Company Funds Overview</h2>
+                </div>
+                
+                <div class="funds-overview">
+                    <div class="funds-card">
+                        <h3>Current Balance</h3>
+                        <div class="funds-amount" id="currentBalance">$0.00</div>
+                    </div>
+                    <div class="funds-card">
+                        <h3>Pending Payroll Amount</h3>
+                        <div class="funds-amount pending" id="pendingAmount">$0.00</div>
+                    </div>
+                    <div class="funds-card">
+                        <h3>Remaining After Payroll</h3>
+                        <div class="funds-amount" id="remainingAmount">$0.00</div>
+                    </div>
+                </div>
+                
+                <div class="funds-status" id="fundsStatus">
+                    <!-- Status will be updated here -->
+                </div>
+
+                <div class="funds-actions">
+                    <button onclick="updateCompanyBalance()" class="btn btn-primary">Update Balance</button>
+                    <button onclick="loadFundsData()" class="btn btn-secondary">Refresh</button>
+                </div>
+            </section>
+
+            <!-- Reports Section -->
+            <section id="reports-section" class="content-section">
+                <div class="section-header">
+                    <h2>Financial Reports</h2>
+                </div>
+                
+                <div class="reports-grid">
+                    <div class="report-card">
+                        <h4>Monthly Payroll Summary</h4>
+                        <p>Current month payroll statistics and breakdown</p>
+                        <div class="report-stats" id="monthlyStats">
+                            <!-- Monthly stats will be loaded here -->
+                        </div>
+                    </div>
+                    <div class="report-card">
+                        <h4>Year-to-Date Summary</h4>
+                        <p>Annual payroll spending and trends</p>
+                        <div class="report-stats" id="yearlyStats">
+                            <!-- Yearly stats will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Bulk Approval Modal -->
+    <div id="bulkApprovalModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Bulk Approve Payrolls</h3>
+                <span class="close" onclick="closeModal('bulkApprovalModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>You are about to approve <span id="selectedCount">0</span> payroll(s).</p>
+                <div class="approval-summary" id="approvalSummary">
+                    <!-- Summary will be shown here -->
+                </div>
+                <div class="warning-message">
+                    <strong>Warning:</strong> This action will deduct the total amount from the company balance and cannot be undone.
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="closeModal('bulkApprovalModal')" class="btn btn-secondary">Cancel</button>
+                <button type="button" onclick="processBulkApproval()" class="btn btn-primary">Approve Selected</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Update Balance Modal -->
+    <div id="balanceModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Update Company Balance</h3>
+                <span class="close" onclick="closeModal('balanceModal')">&times;</span>
+            </div>
+            <form id="updateBalanceForm">
+                <div class="form-group">
+                    <label for="balanceAmount">Amount to Add</label>
+                    <input type="number" id="balanceAmount" name="amount" step="0.01" required placeholder="Enter amount">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" onclick="closeModal('balanceModal')" class="btn btn-secondary">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Update Balance</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+    <script>
+        // Check authentication
+        checkAuth('Director');
+
+        // Set user name
+        document.getElementById('userName').textContent = localStorage.getItem('firstName') + ' ' + localStorage.getItem('lastName');
+
+        // Set current month
+        const now = new Date();
+        document.getElementById('monthFilterApproval').value = now.getMonth() + 1;
+
+        // Sidebar navigation
+        document.querySelectorAll('.sidebar-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const section = this.dataset.section;
+                
+                // Remove active class from all links and sections
+                document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+                document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+                
+                // Add active class to clicked link and corresponding section
+                this.classList.add('active');
+                document.getElementById(section + '-section').classList.add('active');
+                
+                // Load data for the section
+                loadSectionData(section);
+            });
+        });
+
+        // Load dashboard data on page load
+        loadDashboardStats();
+        loadSectionData('dashboard');
+
+        async function loadDashboardStats() {
+            try {
+                const response = await apiCall('/api/dashboard/stats/');
+                if (response.ok) {
+                    const stats = await response.json();
+                    document.getElementById('pendingPayrolls').textContent = stats.pending_payrolls || 0;
+                    document.getElementById('approvedPayrolls').textContent = stats.approved_payrolls || 0;
+                    document.getElementById('companyBalance').textContent = '$' + (stats.company_balance || 0).toLocaleString();
+                    document.getElementById('totalEmployees').textContent = stats.total_employees || 0;
+                }
+            } catch (error) {
+                console.error('Error loading dashboard stats:', error);
+            }
+        }
+
+        async function loadSectionData(section) {
+            switch(section) {
+                case 'approvals':
+                    await loadPendingPayrolls();
+                    break;
+                case 'funds':
+                    await loadFundsData();
+                    break;
+                case 'reports':
+                    await loadReportsData();
+                    break;
+            }
+        }
+
+        async function loadPendingPayrolls() {
+            const status = document.getElementById('statusFilter').value;
+            const month = document.getElementById('monthFilterApproval').value;
+            
+            let url = '/api/payrolls/';
+            const params = new URLSearchParams();
+            if (status) params.append('status', status);
+            if (month) params.append('month', month);
+            
+            if (params.toString()) {
+                url += '?' + params.toString();
+            }
+            
+            try {
+                const response = await apiCall(url);
+                if (response.ok) {
+                    const payrolls = await response.json();
+                    const tbody = document.getElementById('approvalsTableBody');
+                    tbody.innerHTML = payrolls.results ? payrolls.results.map(payroll => `
+                        <tr>
+                            <td>
+                                ${payroll.status === 'Pending' ? `<input type="checkbox" class="payroll-checkbox" value="${payroll.id}">` : ''}
+                            </td>
+                            <td>${payroll.employee_name}</td>
+                            <td>${payroll.employee?.role || 'N/A'}</td>
+                            <td>$${parseFloat(payroll.employee?.base_salary || 0).toLocaleString()}</td>
+                            <td>$${parseFloat(payroll.bonus).toLocaleString()}</td>
+                            <td>$${parseFloat(payroll.deductions).toLocaleString()}</td>
+                            <td>$${parseFloat(payroll.final_salary).toLocaleString()}</td>
+                            <td>${payroll.month}/${payroll.year}</td>
+                            <td><span class="status ${payroll.status.toLowerCase()}">${payroll.status}</span></td>
+                            <td>
+                                ${payroll.status === 'Pending' ? `
+                                    <button onclick="approvePayroll(${payroll.id})" class="btn btn-sm btn-success">Approve</button>
+                                ` : payroll.status === 'Approved' ? `
+                                    <button onclick="markAsPaid(${payroll.id})" class="btn btn-sm btn-info">Mark Paid</button>
+                                ` : ''}
+                            </td>
+                        </tr>
+                    `).join('') : '<tr><td colspan="10">No payrolls found</td></tr>';
+                }
+            } catch (error) {
+                console.error('Error loading payrolls:', error);
+            }
+        }
+
+        async function loadFundsData() {
+            try {
+                const response = await apiCall('/api/dashboard/company_funds/');
+                if (response.ok) {
+                    const funds = await response.json();
+                    document.getElementById('currentBalance').textContent = '$' + parseFloat(funds.current_balance).toLocaleString();
+                    document.getElementById('pendingAmount').textContent = '$' + parseFloat(funds.pending_payroll_amount).toLocaleString();
+                    document.getElementById('remainingAmount').textContent = '$' + parseFloat(funds.remaining_after_payroll).toLocaleString();
+                    
+                    const statusDiv = document.getElementById('fundsStatus');
+                    if (funds.can_afford_pending) {
+                        statusDiv.innerHTML = '<div class="alert alert-success">✅ Sufficient funds available for all pending payrolls</div>';
+                    } else {
+                        statusDiv.innerHTML = '<div class="alert alert-danger">⚠️ Insufficient funds! Please add more funds before approving payrolls.</div>';
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading funds data:', error);
+            }
+        }
+
+        async function loadReportsData() {
+            try {
+                const response = await apiCall('/api/payrolls/monthly_summary/');
+                if (response.ok) {
+                    const summary = await response.json();
+                    document.getElementById('monthlyStats').innerHTML = `
+                        <div class="stat-item">Total Payrolls: ${summary.total_payrolls}</div>
+                        <div class="stat-item">Pending: ${summary.pending_count}</div>
+                        <div class="stat-item">Approved: ${summary.approved_count}</div>
+                        <div class="stat-item">Total Amount: $${parseFloat(summary.total_amount).toLocaleString()}</div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error loading reports data:', error);
+            }
+        }
+
+        function toggleSelectAll() {
+            const selectAll = document.getElementById('selectAll');
+            const checkboxes = document.querySelectorAll('.payroll-checkbox');
+            checkboxes.forEach(cb => cb.checked = selectAll.checked);
+        }
+
+        function showBulkApprovalModal() {
+            const selectedCheckboxes = document.querySelectorAll('.payroll-checkbox:checked');
+            const count = selectedCheckboxes.length;
+            
+            if (count === 0) {
+                alert('Please select at least one payroll to approve.');
+                return;
+            }
+            
+            document.getElementById('selectedCount').textContent = count;
+            
+            // Calculate total amount
+            let totalAmount = 0;
+            selectedCheckboxes.forEach(cb => {
+                const row = cb.closest('tr');
+                const finalSalaryCell = row.cells[6]; // Final salary column
+                const amount = parseFloat(finalSalaryCell.textContent.replace('$', '').replace(',', ''));
+                totalAmount += amount;
+            });
+            
+            document.getElementById('approvalSummary').innerHTML = `
+                <p><strong>Total Amount:</strong> $${totalAmount.toLocaleString()}</p>
+            `;
+            
+            document.getElementById('bulkApprovalModal').style.display = 'block';
+        }
+
+        async function processBulkApproval() {
+            const selectedCheckboxes = document.querySelectorAll('.payroll-checkbox:checked');
+            const payrollIds = Array.from(selectedCheckboxes).map(cb => parseInt(cb.value));
+            
+            try {
+                const response = await apiCall('/api/payrolls/approve_payrolls/', {
+                    method: 'POST',
+                    body: JSON.stringify({ payroll_ids: payrollIds })
+                });
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    alert(`Successfully approved ${result.approved_count} payroll(s).`);
+                    if (result.errors.length > 0) {
+                        alert('Some errors occurred:\n' + result.errors.join('\n'));
+                    }
+                    closeModal('bulkApprovalModal');
+                    loadPendingPayrolls();
+                    loadDashboardStats();
+                    loadFundsData();
+                } else {
+                    const error = await response.json();
+                    alert('Error processing bulk approval: ' + (error.detail || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error('Error processing bulk approval:', error);
+                alert('Error processing bulk approval');
+            }
+        }
+
+        async function approvePayroll(id) {
+            if (!confirm('Are you sure you want to approve this payroll?')) {
+                return;
+            }
+            
+            try {
+                const response = await apiCall(`/api/payrolls/approve_payrolls/`, {
+                    method: 'POST',
+                    body: JSON.stringify({ payroll_ids: [id] })
+                });
+                
+                if (response.ok) {
+                    alert('Payroll approved successfully!');
+                    loadPendingPayrolls();
+                    loadDashboardStats();
+                    loadFundsData();
+                } else {
+                    const error = await response.json();
+                    alert('Error approving payroll: ' + (error.detail || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error('Error approving payroll:', error);
+                alert('Error approving payroll');
+            }
+        }
+
+        async function markAsPaid(id) {
+            if (!confirm('Are you sure you want to mark this payroll as paid?')) {
+                return;
+            }
+            
+            try {
+                const response = await apiCall(`/api/payrolls/${id}/mark_as_paid/`, {
+                    method: 'POST'
+                });
+                
+                if (response.ok) {
+                    alert('Payroll marked as paid successfully!');
+                    loadPendingPayrolls();
+                    loadDashboardStats();
+                } else {
+                    const error = await response.json();
+                    alert('Error marking payroll as paid: ' + (error.detail || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error('Error marking payroll as paid:', error);
+                alert('Error marking payroll as paid');
+            }
+        }
+
+        function updateCompanyBalance() {
+            document.getElementById('balanceModal').style.display = 'block';
+        }
+
+        function exportReport() {
+            alert('Export functionality would be implemented here');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // Handle balance update form
+        document.getElementById('updateBalanceForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const amount = formData.get('amount');
+            
+            // This would typically call an API endpoint to update balance
+            alert(`Would add $${amount} to company balance. This functionality needs to be implemented in the backend.`);
+            closeModal('balanceModal');
+            e.target.reset();
+        });
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

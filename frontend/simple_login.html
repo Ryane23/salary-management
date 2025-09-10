@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- META TAGS: Basic page information -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - PayrollPro</title>
+    
+    <!-- STYLESHEETS: Link to simple CSS -->
+    <link rel="stylesheet" href="simple_styles.css">
+</head>
+<body>
+    <!-- LOGIN PAGE CONTAINER: Full-height container for centering the form -->
+    <div class="form-container">
+        <!-- LOGIN FORM BOX: Centered box with border and shadow -->
+        <div class="form-box">
+            <!-- FORM HEADER: Title and description -->
+            <h2 class="form-title">Login to PayrollPro</h2>
+            <p class="text-center" style="color: #6c757d; margin-bottom: 30px;">
+                Sign in to access your dashboard
+            </p>
+            
+            <!-- ALERT CONTAINER: For showing success/error messages -->
+            <div id="alertContainer"></div>
+            
+            <!-- LOGIN FORM: Main form for user authentication -->
+            <form id="loginForm">
+                <!-- USERNAME INPUT: User's login username -->
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input 
+                        type="text" 
+                        id="username" 
+                        name="username" 
+                        class="form-control" 
+                        placeholder="Enter your username"
+                        required
+                    >
+                </div>
+                
+                <!-- PASSWORD INPUT: User's password -->
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        class="form-control" 
+                        placeholder="Enter your password"
+                        required
+                    >
+                </div>
+                
+                <!-- ROLE SELECTION: Choose user role (Admin, HR, Director) -->
+                <div class="form-group">
+                    <label for="role">Role</label>
+                    <select id="role" name="role" class="form-select" required>
+                        <option value="">Select your role</option>
+                        <option value="Admin">Administrator</option>
+                        <option value="HR">HR Manager</option>
+                        <option value="Director">Director</option>
+                    </select>
+                </div>
+                
+                <!-- SUBMIT BUTTON: Login button -->
+                <button type="submit" class="btn btn-primary" style="width: 100%;" id="loginBtn">
+                    Login
+                </button>
+            </form>
+            
+            <!-- FORM FOOTER: Link to signup page -->
+            <div class="form-footer">
+                <p>Don't have an account? <a href="simple_signup.html">Sign up here</a></p>
+                <p><a href="simple_home.html">← Back to Home</a></p>
+            </div>
+            
+            <!-- DEMO CREDENTIALS: Show test credentials for easy testing -->
+            <div style="margin-top: 30px; padding: 20px; background-color: #f8f9fa; border-radius: 5px; border: 1px solid #dee2e6;">
+                <h4 style="margin-bottom: 15px; color: #495057; font-size: 16px;">Demo Credentials:</h4>
+                <div style="font-size: 14px; color: #6c757d;">
+                    <p><strong>Admin:</strong> admin / admin123</p>
+                    <p><strong>HR:</strong> hr_manager / hr123</p>
+                    <p><strong>Director:</strong> director / director123</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT: Handle form submission and authentication -->
+    <script>
+        // LOGIN FORM HANDLER: Process login form submission
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault(); // Prevent default form submission
+            
+            // Get form elements
+            const loginBtn = document.getElementById('loginBtn');
+            const alertContainer = document.getElementById('alertContainer');
+            
+            // Get form data
+            const formData = new FormData(e.target);
+            const loginData = {
+                username: formData.get('username'),
+                password: formData.get('password'),
+                role: formData.get('role')
+            };
+            
+            // Show loading state
+            loginBtn.textContent = 'Logging in...';
+            loginBtn.disabled = true;
+            
+            // Clear any previous alerts
+            alertContainer.innerHTML = '';
+            
+            try {
+                // DEMO AUTHENTICATION: Simple client-side validation for demo
+                // In a real app, this would be sent to the server
+                const validCredentials = {
+                    'admin': { password: 'admin123', role: 'Admin' },
+                    'hr_manager': { password: 'hr123', role: 'HR' },
+                    'director': { password: 'director123', role: 'Director' }
+                };
+                
+                // Simulate server delay
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                // Check credentials
+                const user = validCredentials[loginData.username];
+                
+                if (user && user.password === loginData.password && user.role === loginData.role) {
+                    // SUCCESS: Valid credentials
+                    
+                    // Store user info in localStorage (simulating session)
+                    localStorage.setItem('user', JSON.stringify({
+                        username: loginData.username,
+                        role: loginData.role,
+                        loginTime: new Date().toISOString()
+                    }));
+                    
+                    // Show success message
+                    alertContainer.innerHTML = `
+                        <div class="alert alert-success">
+                            Login successful! Redirecting to dashboard...
+                        </div>
+                    `;
+                    
+                    // Redirect to appropriate dashboard after 2 seconds
+                    setTimeout(() => {
+                        switch(loginData.role) {
+                            case 'Admin':
+                                window.location.href = 'simple_dashboard_admin.html';
+                                break;
+                            case 'HR':
+                                window.location.href = 'simple_dashboard_hr.html';
+                                break;
+                            case 'Director':
+                                window.location.href = 'simple_dashboard_director.html';
+                                break;
+                            default:
+                                window.location.href = 'simple_dashboard_admin.html';
+                        }
+                    }, 2000);
+                    
+                } else {
+                    // ERROR: Invalid credentials
+                    throw new Error('Invalid username, password, or role');
+                }
+                
+            } catch (error) {
+                // Handle login errors
+                console.error('Login error:', error);
+                
+                alertContainer.innerHTML = `
+                    <div class="alert alert-error">
+                        Login failed: ${error.message}. Please check your credentials and try again.
+                    </div>
+                `;
+                
+                // Reset button
+                loginBtn.textContent = 'Login';
+                loginBtn.disabled = false;
+            }
+        });
+        
+        // CHECK IF ALREADY LOGGED IN: Redirect if user is already authenticated
+        const currentUser = localStorage.getItem('user');
+        if (currentUser) {
+            const user = JSON.parse(currentUser);
+            console.log('User already logged in:', user);
+            
+            // Redirect to appropriate dashboard
+            switch(user.role) {
+                case 'Admin':
+                    window.location.href = 'simple_dashboard_admin.html';
+                    break;
+                case 'HR':
+                    window.location.href = 'simple_dashboard_hr.html';
+                    break;
+                case 'Director':
+                    window.location.href = 'simple_dashboard_director.html';
+                    break;
+            }
+        }
+        
+        // DEBUGGING: Log page load
+        console.log('Login page loaded successfully');
+    </script>
+</body>
+</html>

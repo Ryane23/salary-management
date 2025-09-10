@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Management - Test Page</title>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .test-section {
+            margin-bottom: 40px;
+            padding: 30px;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            background: #f8fafc;
+        }
+
+        .test-section h3 {
+            color: #1e293b;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            margin: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #f1f5f9;
+            color: #475569;
+            border: 2px solid #e2e8f0;
+        }
+
+        .btn-secondary:hover {
+            background: #e2e8f0;
+        }
+
+        .btn-success {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+        }
+
+        .api-result {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 12px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            margin-top: 15px;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .loading {
+            color: #3b82f6;
+        }
+
+        .error {
+            color: #ef4444;
+        }
+
+        .success {
+            color: #10b981;
+        }
+
+        .info-card {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            border: 1px solid #3b82f6;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .info-card h4 {
+            color: #1e40af;
+            margin-bottom: 10px;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .status-green { background-color: #10b981; }
+        .status-red { background-color: #ef4444; }
+        .status-yellow { background-color: #f59e0b; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i data-lucide="database"></i> Employee Management System Test</h1>
+            <p>Comprehensive testing interface for database operations and API endpoints</p>
+        </div>
+
+        <div class="content">
+            <!-- System Status -->
+            <div class="test-section">
+                <h3><i data-lucide="activity"></i> System Status</h3>
+                <div class="info-card">
+                    <h4>Database Connection & Server Status</h4>
+                    <p id="systemStatus">Testing connection...</p>
+                </div>
+                <button class="btn btn-primary" onclick="testSystemStatus()">
+                    <i data-lucide="refresh-cw"></i>
+                    Test System Status
+                </button>
+                <div id="systemResult" class="api-result" style="display: none;"></div>
+            </div>
+
+            <!-- Database Data -->
+            <div class="test-section">
+                <h3><i data-lucide="users"></i> Database Data</h3>
+                <p>View and test employee data from the database</p>
+                
+                <button class="btn btn-primary" onclick="loadEmployees()">
+                    <i data-lucide="download"></i>
+                    Load Employees
+                </button>
+                
+                <button class="btn btn-secondary" onclick="loadDepartments()">
+                    <i data-lucide="building"></i>
+                    Load Departments
+                </button>
+                
+                <button class="btn btn-secondary" onclick="loadCompanyProfile()">
+                    <i data-lucide="building-2"></i>
+                    Load Company Profile
+                </button>
+                
+                <div id="employeeData" class="api-result" style="display: none;"></div>
+            </div>
+
+            <!-- API Testing -->
+            <div class="test-section">
+                <h3><i data-lucide="settings"></i> API Endpoint Testing</h3>
+                <p>Test all employee management API endpoints</p>
+                
+                <button class="btn btn-primary" onclick="testEmployeeAPI()">
+                    <i data-lucide="user-plus"></i>
+                    Test Employee API
+                </button>
+                
+                <button class="btn btn-secondary" onclick="testDashboardStats()">
+                    <i data-lucide="bar-chart"></i>
+                    Test Dashboard Stats
+                </button>
+                
+                <button class="btn btn-secondary" onclick="testAnalytics()">
+                    <i data-lucide="trending-up"></i>
+                    Test Analytics
+                </button>
+                
+                <div id="apiTestResult" class="api-result" style="display: none;"></div>
+            </div>
+
+            <!-- Navigation Testing -->
+            <div class="test-section">
+                <h3><i data-lucide="external-link"></i> Frontend Navigation</h3>
+                <p>Access different parts of the employee management system</p>
+                
+                <a href="employee_management.html" class="btn btn-success">
+                    <i data-lucide="users"></i>
+                    Employee Management Interface
+                </a>
+                
+                <a href="dashboard_admin_new.html" class="btn btn-secondary">
+                    <i data-lucide="layout-dashboard"></i>
+                    Admin Dashboard
+                </a>
+                
+                <a href="/api/" class="btn btn-secondary">
+                    <i data-lucide="code"></i>
+                    API Documentation
+                </a>
+            </div>
+
+            <!-- Sample Data -->
+            <div class="test-section">
+                <h3><i data-lucide="database"></i> Sample Data Summary</h3>
+                <div class="info-card">
+                    <h4>Available Test Data</h4>
+                    <ul>
+                        <li><strong>Company:</strong> TechCorp Solutions</li>
+                        <li><strong>Admin User:</strong> admin / admin123</li>
+                        <li><strong>Sample Employees:</strong> 4 employees with different roles</li>
+                        <li><strong>Login Credentials:</strong> All employees use password123</li>
+                    </ul>
+                </div>
+                <div id="dataSummary"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize icons
+        lucide.createIcons();
+
+        const API_BASE = '/api';
+
+        async function testSystemStatus() {
+            const resultDiv = document.getElementById('systemResult');
+            const statusDiv = document.getElementById('systemStatus');
+            
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = '<span class="loading">Testing system connection...</span>';
+            
+            try {
+                // Test database connection
+                const response = await fetch(`${API_BASE}/test-db/`);
+                const data = await response.text();
+                
+                if (response.ok) {
+                    statusDiv.innerHTML = '<span class="status-indicator status-green"></span>System Online - Database Connected';
+                    resultDiv.innerHTML = `<span class="success">✓ System Status: OK</span>\n\nDatabase Response:\n${data}`;
+                } else {
+                    statusDiv.innerHTML = '<span class="status-indicator status-yellow"></span>System Online - Database Issues';
+                    resultDiv.innerHTML = `<span class="error">⚠ Database Warning</span>\n\nResponse: ${response.status} ${response.statusText}\n${data}`;
+                }
+            } catch (error) {
+                statusDiv.innerHTML = '<span class="status-indicator status-red"></span>System Offline';
+                resultDiv.innerHTML = `<span class="error">✗ Connection Failed</span>\n\nError: ${error.message}`;
+            }
+        }
+
+        async function loadEmployees() {
+            const resultDiv = document.getElementById('employeeData');
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = '<span class="loading">Loading employee data...</span>';
+            
+            try {
+                const response = await fetch(`${API_BASE}/employee-management/`);
+                
+                if (response.ok) {
+                    const employees = await response.json();
+                    resultDiv.innerHTML = `<span class="success">✓ Loaded ${employees.length} employees</span>\n\n${JSON.stringify(employees, null, 2)}`;
+                } else {
+                    const errorText = await response.text();
+                    resultDiv.innerHTML = `<span class="error">✗ Failed to load employees</span>\n\nError: ${response.status} ${response.statusText}\n${errorText}`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<span class="error">✗ Network Error</span>\n\nError: ${error.message}`;
+            }
+        }
+
+        async function loadDepartments() {
+            const resultDiv = document.getElementById('employeeData');
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = '<span class="loading">Loading departments...</span>';
+            
+            try {
+                const response = await fetch(`${API_BASE}/employee-management/departments/`);
+                
+                if (response.ok) {
+                    const departments = await response.json();
+                    resultDiv.innerHTML = `<span class="success">✓ Loaded ${departments.length} departments</span>\n\n${JSON.stringify(departments, null, 2)}`;
+                } else {
+                    const errorText = await response.text();
+                    resultDiv.innerHTML = `<span class="error">✗ Failed to load departments</span>\n\nError: ${response.status} ${response.statusText}\n${errorText}`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<span class="error">✗ Network Error</span>\n\nError: ${error.message}`;
+            }
+        }
+
+        async function loadCompanyProfile() {
+            const resultDiv = document.getElementById('employeeData');
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = '<span class="loading">Loading company profile...</span>';
+            
+            try {
+                const response = await fetch(`${API_BASE}/company-profile/details/`);
+                
+                if (response.ok) {
+                    const profile = await response.json();
+                    resultDiv.innerHTML = `<span class="success">✓ Loaded company profile</span>\n\n${JSON.stringify(profile, null, 2)}`;
+                } else {
+                    const errorText = await response.text();
+                    resultDiv.innerHTML = `<span class="error">✗ Failed to load company profile</span>\n\nError: ${response.status} ${response.statusText}\n${errorText}`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<span class="error">✗ Network Error</span>\n\nError: ${error.message}`;
+            }
+        }
+
+        async function testEmployeeAPI() {
+            const resultDiv = document.getElementById('apiTestResult');
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = '<span class="loading">Testing Employee API endpoints...</span>';
+            
+            let results = [];
+            
+            try {
+                // Test employee list
+                const listResponse = await fetch(`${API_BASE}/employee-management/`);
+                results.push(`Employee List: ${listResponse.status} ${listResponse.statusText}`);
+                
+                // Test departments
+                const deptResponse = await fetch(`${API_BASE}/employee-management/departments/`);
+                results.push(`Departments: ${deptResponse.status} ${deptResponse.statusText}`);
+                
+                // Test analytics
+                const analyticsResponse = await fetch(`${API_BASE}/analytics/recent_activity/`);
+                results.push(`Recent Activity: ${analyticsResponse.status} ${analyticsResponse.statusText}`);
+                
+                resultDiv.innerHTML = `<span class="success">✓ API Endpoint Tests Completed</span>\n\n${results.join('\n')}`;
+                
+            } catch (error) {
+                resultDiv.innerHTML = `<span class="error">✗ API Test Failed</span>\n\nError: ${error.message}`;
+            }
+        }
+
+        async function testDashboardStats() {
+            const resultDiv = document.getElementById('apiTestResult');
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = '<span class="loading">Testing dashboard statistics...</span>';
+            
+            try {
+                const response = await fetch(`${API_BASE}/dashboard-stats/`);
+                
+                if (response.ok) {
+                    const stats = await response.json();
+                    resultDiv.innerHTML = `<span class="success">✓ Dashboard stats loaded</span>\n\n${JSON.stringify(stats, null, 2)}`;
+                } else {
+                    const errorText = await response.text();
+                    resultDiv.innerHTML = `<span class="error">✗ Dashboard stats failed</span>\n\nError: ${response.status} ${response.statusText}\n${errorText}`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<span class="error">✗ Network Error</span>\n\nError: ${error.message}`;
+            }
+        }
+
+        async function testAnalytics() {
+            const resultDiv = document.getElementById('apiTestResult');
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = '<span class="loading">Testing analytics endpoints...</span>';
+            
+            let results = [];
+            
+            try {
+                // Test various analytics endpoints
+                const endpoints = [
+                    'analytics/recent_activity/',
+                    'analytics/department_costs/',
+                    'analytics/payroll_trends/'
+                ];
+                
+                for (const endpoint of endpoints) {
+                    try {
+                        const response = await fetch(`${API_BASE}/${endpoint}`);
+                        results.push(`${endpoint}: ${response.status} ${response.statusText}`);
+                    } catch (e) {
+                        results.push(`${endpoint}: Error - ${e.message}`);
+                    }
+                }
+                
+                resultDiv.innerHTML = `<span class="success">✓ Analytics Tests Completed</span>\n\n${results.join('\n')}`;
+                
+            } catch (error) {
+                resultDiv.innerHTML = `<span class="error">✗ Analytics Test Failed</span>\n\nError: ${error.message}`;
+            }
+        }
+
+        // Auto-test on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            testSystemStatus();
+        });
+    </script>
+</body>
+</html>

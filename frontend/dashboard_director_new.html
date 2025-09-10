@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - PayrollPro</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <style>
+        /* Modern Dashboard Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f8fafc;
+            color: #334155;
+            overflow-x: hidden;
+        }
+
+        .dashboard {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 280px;
+            background: white;
+            border-right: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-header {
+            padding: 24px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .logo-text {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .nav-menu {
+            padding: 24px 16px;
+            flex: 1;
+        }
+
+        .nav-section {
+            margin-bottom: 32px;
+        }
+
+        .nav-section-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+            padding: 0 12px;
+        }
+
+        .nav-item {
+            margin-bottom: 4px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 8px;
+            color: #64748b;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .nav-link:hover {
+            background: #f1f5f9;
+            color: #334155;
+        }
+
+        .nav-link.active {
+            background: #f0f4ff;
+            color: #3b82f6;
+            border: 1px solid #dbeafe;
+        }
+
+        .nav-icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .topbar {
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 16px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .topbar-left h1 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-input {
+            padding: 8px 16px 8px 40px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            background: #f8fafc;
+            width: 300px;
+            font-size: 14px;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            background: white;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 16px;
+            height: 16px;
+            color: #64748b;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .user-menu:hover {
+            border-color: #cbd5e1;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .content-area {
+            padding: 32px;
+            flex: 1;
+        }
+
+        /* Dashboard Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            border: 1px solid #e2e8f0;
+            transition: all 0.2s ease;
+        }
+
+        .stat-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border-color: #cbd5e1;
+            transform: translateY(-2px);
+        }
+
+        .stat-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .stat-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: #64748b;
+        }
+
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .stat-icon.primary { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+        .stat-icon.success { background: linear-gradient(135deg, #10b981, #059669); }
+        .stat-icon.warning { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .stat-icon.danger { background: linear-gradient(135deg, #ef4444, #dc2626); }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 4px;
+        }
+
+        .stat-change {
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .stat-change.positive { color: #059669; }
+        .stat-change.negative { color: #dc2626; }
+
+        /* Content Cards */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+        }
+
+        .content-card {
+            background: white;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .card-content {
+            padding: 24px;
+        }
+
+        /* Action Buttons */
+        .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2563eb;
+            transform: translateY(-1px);
+        }
+
+        .btn-outline {
+            background: white;
+            color: #64748b;
+            border: 1px solid #e2e8f0;
+        }
+
+        .btn-outline:hover {
+            border-color: #cbd5e1;
+            color: #334155;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: grid;
+            gap: 12px;
+        }
+
+        .quick-action {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            background: #f8fafc;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .quick-action:hover {
+            background: white;
+            border-color: #cbd5e1;
+            transform: translateY(-1px);
+        }
+
+        .quick-action-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border: 1px solid #e2e8f0;
+        }
+
+        /* Recent Activity */
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f1f5f9;
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-title {
+            font-weight: 500;
+            color: #1e293b;
+            margin-bottom: 2px;
+        }
+
+        .activity-time {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .search-input {
+                width: 200px;
+            }
+
+            .topbar {
+                padding: 16px 20px;
+            }
+
+            .content-area {
+                padding: 20px;
+            }
+        }
+
+        /* Mobile menu button */
+        .mobile-menu-btn {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 200;
+            padding: 8px;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="mobile-menu-btn" onclick="toggleSidebar()">
+        <i data-lucide="menu" style="width: 20px; height: 20px;"></i>
+    </button>
+
+    <div class="dashboard">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i data-lucide="coins"></i>
+                    </div>
+                    <div class="logo-text">PayrollPro</div>
+                </div>
+            </div>
+            
+            <nav class="nav-menu">
+                <div class="nav-section">
+                    <div class="nav-section-title">Overview</div>
+                    <div class="nav-item">
+                        <a href="#dashboard" class="nav-link active" data-page="dashboard">
+                            <i data-lucide="layout-dashboard" class="nav-icon"></i>
+                            Dashboard
+                        </a>
+                    </div>
+                    <div class="nav-item">
+                        <a href="#analytics" class="nav-link" data-page="analytics">
+                            <i data-lucide="trending-up" class="nav-icon"></i>
+                            Analytics
+                        </a>
+                    </div>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Management</div>
+                    <div class="nav-item">
+                        <a href="#employees" class="nav-link" data-page="employees">
+                            <i data-lucide="users" class="nav-icon"></i>
+                            Employees
+                        </a>
+                    </div>
+                    <div class="nav-item">
+                        <a href="#payroll" class="nav-link" data-page="payroll">
+                            <i data-lucide="credit-card" class="nav-icon"></i>
+                            Payroll
+                        </a>
+                    </div>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Administration</div>
+                    <div class="nav-item">
+                        <a href="#users" class="nav-link" data-page="users">
+                            <i data-lucide="user-cog" class="nav-icon"></i>
+                            User Management
+                        </a>
+                    </div>
+                    <div class="nav-item">
+                        <a href="#settings" class="nav-link" data-page="settings">
+                            <i data-lucide="settings" class="nav-icon"></i>
+                            Settings
+                        </a>
+                    </div>
+                    <div class="nav-item">
+                        <a href="#" class="nav-link" onclick="logout()">
+                            <i data-lucide="log-out" class="nav-icon"></i>
+                            Logout
+                        </a>
+                    </div>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Topbar -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <h1 id="pageTitle">Dashboard</h1>
+                </div>
+                <div class="topbar-right">
+                    <div class="search-box">
+                        <i data-lucide="search" class="search-icon"></i>
+                        <input type="text" class="search-input" placeholder="Search employees, payroll...">
+                    </div>
+                    <div class="user-menu" onclick="toggleUserMenu()">
+                        <div class="user-avatar">D</div>
+                        <div>
+                            <div style="font-weight: 500; font-size: 14px;">Director</div>
+                            <div style="font-size: 12px; color: #64748b;">director@payrollpro.com</div>
+                        </div>
+                        <i data-lucide="chevron-down" style="width: 16px; height: 16px;"></i>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content Area -->
+            <div class="content-area" id="contentArea">
+                <!-- Dashboard Overview -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-title">Total Employees</div>
+                            <div class="stat-icon primary">
+                                <i data-lucide="users"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value">2,847</div>
+                        <div class="stat-change positive">
+                            <i data-lucide="trending-up" style="width: 16px; height: 16px;"></i>
+                            +12% from last month
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-title">Monthly Payroll</div>
+                            <div class="stat-icon success">
+                                <i data-lucide="dollar-sign"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value">$485,200</div>
+                        <div class="stat-change positive">
+                            <i data-lucide="trending-up" style="width: 16px; height: 16px;"></i>
+                            +8.3% from last month
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-title">Pending Approvals</div>
+                            <div class="stat-icon warning">
+                                <i data-lucide="clock"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value">24</div>
+                        <div class="stat-change negative">
+                            <i data-lucide="trending-down" style="width: 16px; height: 16px;"></i>
+                            -5% from last week
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <div class="stat-title">Total Departments</div>
+                            <div class="stat-icon primary">
+                                <i data-lucide="building-2"></i>
+                            </div>
+                        </div>
+                        <div class="stat-value">8</div>
+                        <div class="stat-change positive">
+                            <i data-lucide="trending-up" style="width: 16px; height: 16px;"></i>
+                            All departments active
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-grid">
+                    <div class="content-card">
+                        <div class="card-header">
+                            <h3 class="card-title">Recent Activity</h3>
+                            <button class="btn btn-outline">
+                                <i data-lucide="external-link" style="width: 16px; height: 16px;"></i>
+                                View All
+                            </button>
+                        </div>
+                        <div class="card-content">
+                            <div class="activity-item">
+                                <div class="activity-icon">
+                                    <i data-lucide="user-plus" style="width: 16px; height: 16px; color: #10b981;"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <div class="activity-title">New employee John Doe added</div>
+                                    <div class="activity-time">2 minutes ago</div>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-icon">
+                                    <i data-lucide="credit-card" style="width: 16px; height: 16px; color: #3b82f6;"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <div class="activity-title">Payroll processed for March 2025</div>
+                                    <div class="activity-time">1 hour ago</div>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-icon">
+                                    <i data-lucide="building" style="width: 16px; height: 16px; color: #f59e0b;"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <div class="activity-title">Company TechCorp updated profile</div>
+                                    <div class="activity-time">3 hours ago</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="content-card">
+                        <div class="card-header">
+                            <h3 class="card-title">Quick Actions</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="quick-actions">
+                                <div class="quick-action" onclick="navigateTo('employees')">
+                                    <div class="quick-action-icon">
+                                        <i data-lucide="user-plus" style="width: 20px; height: 20px; color: #3b82f6;"></i>
+                                    </div>
+                                    <div>
+                                        <div style="font-weight: 500; font-size: 14px;">Add Employee</div>
+                                        <div style="font-size: 12px; color: #64748b;">Create new employee record</div>
+                                    </div>
+                                </div>
+
+                                <div class="quick-action" onclick="navigateTo('payroll')">
+                                    <div class="quick-action-icon">
+                                        <i data-lucide="calculator" style="width: 20px; height: 20px; color: #10b981;"></i>
+                                    </div>
+                                    <div>
+                                        <div style="font-weight: 500; font-size: 14px;">Process Payroll</div>
+                                        <div style="font-size: 12px; color: #64748b;">Generate payroll for this month</div>
+                                    </div>
+                                </div>
+
+                                <div class="quick-action" onclick="navigateTo('analytics')">
+                                    <div class="quick-action-icon">
+                                        <i data-lucide="bar-chart" style="width: 20px; height: 20px; color: #8b5cf6;"></i>
+                                    </div>
+                                    <div>
+                                        <div style="font-weight: 500; font-size: 14px;">View Reports</div>
+                                        <div style="font-size: 12px; color: #64748b;">Generate detailed analytics</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Authentication Functions
+        function checkAuth(requiredRole) {
+            try {
+                const user = localStorage.getItem('user');
+                if (!user) {
+                    alert('Please login to access the dashboard');
+                    window.location.href = 'login.html';
+                    return false;
+                }
+                
+                const userData = JSON.parse(user);
+                if (requiredRole && userData.role !== requiredRole) {
+                    alert(`Access denied. This dashboard is for ${requiredRole} users only.`);
+                    switch(userData.role) {
+                        case 'Admin':
+                            window.location.href = 'dashboard_admin_new.html';
+                            break;
+                        case 'HR':
+                            window.location.href = 'dashboard_hr_new.html';
+                            break;
+                        case 'Director':
+                            window.location.href = 'dashboard_director_new.html';
+                            break;
+                        default:
+                            window.location.href = 'login.html';
+                    }
+                    return false;
+                }
+                
+                return true;
+            } catch (error) {
+                console.error('Auth check error:', error);
+                window.location.href = 'login.html';
+                return false;
+            }
+        }
+        
+        function clearAuthData() {
+            localStorage.removeItem('user');
+            localStorage.removeItem('token');
+            localStorage.removeItem('loginTime');
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                clearAuthData();
+                window.location.href = 'login.html';
+            }
+        }
+
+        // Navigation Functions
+        function navigateTo(page) {
+            // Remove active class from all nav links
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // Add active class to clicked nav link
+            const navLink = document.querySelector(`[data-page="${page}"]`);
+            if (navLink) {
+                navLink.classList.add('active');
+            }
+            
+            // Update page title
+            const titles = {
+                'dashboard': 'Dashboard',
+                'employees': 'Employee Management',
+                'payroll': 'Payroll Management',
+                'users': 'User Management',
+                'analytics': 'Analytics & Reports',
+                'settings': 'System Settings'
+            };
+            
+            document.getElementById('pageTitle').textContent = titles[page] || 'Dashboard';
+            
+            // Load page content
+            loadPageContent(page);
+        }
+
+        function loadPageContent(page) {
+            const contentArea = document.getElementById('contentArea');
+            
+            switch(page) {
+                case 'employees':
+                    contentArea.innerHTML = `
+                        <div class="content-card">
+                            <div class="card-header">
+                                <h3 class="card-title">Employee Management</h3>
+                                <button class="btn btn-primary">
+                                    <i data-lucide="user-plus" style="width: 16px; height: 16px;"></i>
+                                    Add Employee
+                                </button>
+                            </div>
+                            <div class="card-content">
+                                <div style="color: #64748b; text-align: center; padding: 40px;">
+                                    Employee management interface will be implemented here.
+                                    <br><br>
+                                    Features will include:
+                                    <br>• Employee list and search
+                                    <br>• Add/Edit employee profiles
+                                    <br>• Employee status management
+                                    <br>• Salary and benefit configuration
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'payroll':
+                    contentArea.innerHTML = `
+                        <div class="content-card">
+                            <div class="card-header">
+                                <h3 class="card-title">Payroll Management</h3>
+                                <button class="btn btn-primary">
+                                    <i data-lucide="calculator" style="width: 16px; height: 16px;"></i>
+                                    Process Payroll
+                                </button>
+                            </div>
+                            <div class="card-content">
+                                <div style="color: #64748b; text-align: center; padding: 40px;">
+                                    Payroll processing interface will be implemented here.
+                                    <br><br>
+                                    Features will include:
+                                    <br>• Monthly payroll processing
+                                    <br>• Salary calculations and deductions
+                                    <br>• Payslip generation
+                                    <br>• Payment approval workflow
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'users':
+                    contentArea.innerHTML = `
+                        <div class="content-card">
+                            <div class="card-header">
+                                <h3 class="card-title">User Management</h3>
+                                <button class="btn btn-primary">
+                                    <i data-lucide="user-cog" style="width: 16px; height: 16px;"></i>
+                                    Add User
+                                </button>
+                            </div>
+                            <div class="card-content">
+                                <div style="color: #64748b; text-align: center; padding: 40px;">
+                                    User management interface will be implemented here.
+                                    <br><br>
+                                    Features will include:
+                                    <br>• User accounts and roles
+                                    <br>• Permission management
+                                    <br>• Access control settings
+                                    <br>• User activity logs
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'analytics':
+                    contentArea.innerHTML = `
+                        <div class="content-card">
+                            <div class="card-header">
+                                <h3 class="card-title">Analytics & Reports</h3>
+                                <button class="btn btn-primary">
+                                    <i data-lucide="download" style="width: 16px; height: 16px;"></i>
+                                    Export Report
+                                </button>
+                            </div>
+                            <div class="card-content">
+                                <div style="color: #64748b; text-align: center; padding: 40px;">
+                                    Analytics and reporting interface will be implemented here.
+                                    <br><br>
+                                    Features will include:
+                                    <br>• Payroll analytics and insights
+                                    <br>• Employee performance metrics
+                                    <br>• Financial reports and summaries
+                                    <br>• Custom report generation
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'settings':
+                    contentArea.innerHTML = `
+                        <div class="content-card">
+                            <div class="card-header">
+                                <h3 class="card-title">System Settings</h3>
+                                <button class="btn btn-primary">
+                                    <i data-lucide="save" style="width: 16px; height: 16px;"></i>
+                                    Save Settings
+                                </button>
+                            </div>
+                            <div class="card-content">
+                                <div style="color: #64748b; text-align: center; padding: 40px;">
+                                    System settings interface will be implemented here.
+                                    <br><br>
+                                    Features will include:
+                                    <br>• General system configuration
+                                    <br>• Email and notification settings
+                                    <br>• Security and backup options
+                                    <br>• System maintenance tools
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                    
+                default:
+                    // Dashboard content is already loaded
+                    return;
+            }
+            
+            // Reinitialize icons after content change
+            lucide.createIcons();
+            
+            // Close mobile sidebar after navigation
+            if (window.innerWidth <= 768) {
+                document.getElementById('sidebar').classList.remove('open');
+            }
+        }
+
+        function toggleUserMenu() {
+            console.log('User menu clicked');
+            // User menu dropdown functionality can be implemented here
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('open');
+        }
+
+        // Event Listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Modern admin dashboard loaded');
+            
+            // Check authentication
+            if (!checkAuth('Director')) {
+                return;
+            }
+            
+            // Initialize icons
+            lucide.createIcons();
+            
+            // Add click event listeners to navigation links
+            document.querySelectorAll('.nav-link[data-page]').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const page = this.getAttribute('data-page');
+                    navigateTo(page);
+                });
+            });
+            
+            // Search functionality
+            const searchInput = document.querySelector('.search-input');
+            if (searchInput) {
+                searchInput.addEventListener('input', function(e) {
+                    const query = e.target.value;
+                    if (query.length > 2) {
+                        console.log('Searching for:', query);
+                        // Implement search functionality here
+                    }
+                });
+            }
+
+            // Close sidebar when clicking outside on mobile
+            document.addEventListener('click', function(e) {
+                const sidebar = document.getElementById('sidebar');
+                const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+                
+                if (window.innerWidth <= 768 && 
+                    !sidebar.contains(e.target) && 
+                    !mobileMenuBtn.contains(e.target)) {
+                    sidebar.classList.remove('open');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

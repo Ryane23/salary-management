@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - PayrollPro</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="nav-logo">
+                    <i class="fas fa-coins"></i>
+                    <h3>PayrollPro</h3>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="#dashboard" class="sidebar-link active" data-page="dashboard">
+                    <i class="sidebar-icon fas fa-chart-pie"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#companies" class="sidebar-link" data-page="companies">
+                    <i class="sidebar-icon fas fa-building"></i>
+                    <span>Companies</span>
+                </a>
+                <a href="#users" class="sidebar-link" data-page="users">
+                    <i class="sidebar-icon fas fa-users"></i>
+                    <span>Users</span>
+                </a>
+                <a href="#employees" class="sidebar-link" data-page="employees">
+                    <i class="sidebar-icon fas fa-user-tie"></i>
+                    <span>Employees</span>
+                </a>
+                <a href="#payroll" class="sidebar-link" data-page="payroll">
+                    <i class="sidebar-icon fas fa-money-check-alt"></i>
+                    <span>Payroll</span>
+                </a>
+                <a href="#notifications" class="sidebar-link" data-page="notifications">
+                    <i class="sidebar-icon fas fa-bell"></i>
+                    <span>Notifications</span>
+                </a>
+                <a href="#reports" class="sidebar-link" data-page="reports">
+                    <i class="sidebar-icon fas fa-chart-bar"></i>
+                    <span>Reports</span>
+                </a>
+                <a href="#settings" class="sidebar-link" data-page="settings">
+                    <i class="sidebar-icon fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Navigation -->
+            <nav class="dashboard-nav">
+                <div class="nav-container">
+                    <div class="dashboard-header">
+                        <div class="dashboard-title">
+                            <h1 id="pageTitle">Admin Dashboard</h1>
+                            <p id="pageSubtitle">Welcome back, Admin! Here's what's happening today.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="nav-user">
+                        <div class="user-info">
+                            <div class="user-avatar">
+                                <i class="fas fa-user-shield"></i>
+                            </div>
+                            <div class="user-details">
+                                <span class="user-name" id="userName">Administrator</span>
+                                <span class="user-role">Admin</span>
+                            </div>
+                        </div>
+                        <button class="logout-btn" onclick="logout()">
+                            <i class="fas fa-sign-out-alt"></i>
+                            Logout
+                        </button>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Page Content Container -->
+            <div id="pageContent">
+                
+                <!-- Dashboard Page -->
+                <div id="dashboardPage" class="page-content active">
+                    <!-- Stats Grid -->
+                    <div class="stats-grid">
+                        <div class="stat-card primary">
+                            <div class="stat-card-header">
+                                <h3>Total Companies</h3>
+                                <div class="stat-icon">
+                                    <i class="fas fa-building"></i>
+                                </div>
+                            </div>
+                            <div class="stat-value" id="totalCompanies">12</div>
+                        </div>
+                        
+                        <div class="stat-card success">
+                            <div class="stat-card-header">
+                                <h3>Active Users</h3>
+                                <div class="stat-icon">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                            </div>
+                            <div class="stat-value" id="activeUsers">247</div>
+                        </div>
+                        
+                        <div class="stat-card warning">
+                            <div class="stat-card-header">
+                                <h3>Pending Payrolls</h3>
+                                <div class="stat-icon">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                            </div>
+                            <div class="stat-value" id="pendingPayrolls">8</div>
+                        </div>
+                        
+                        <div class="stat-card danger">
+                            <div class="stat-card-header">
+                                <h3>System Alerts</h3>
+                                <div class="stat-icon">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                            </div>
+                            <div class="stat-value" id="systemAlerts">3</div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity -->
+                    <div class="table-container">
+                        <div class="table-header">
+                            <h3>Recent System Activity</h3>
+                            <div class="table-actions">
+                                <button class="btn btn-primary btn-sm">
+                                    <i class="fas fa-refresh"></i>
+                                    Refresh
+                                </button>
+                            </div>
+                        </div>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>User</th>
+                                    <th>Action</th>
+                                    <th>Status</th>
+                                    <th>Details</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>2 mins ago</td>
+                                    <td>John Doe (HR)</td>
+                                    <td>Payroll Approval</td>
+                                    <td><span class="status approved">Approved</span></td>
+                                    <td>Approved payroll for Marketing Dept.</td>
+                                </tr>
+                                <tr>
+                                    <td>15 mins ago</td>
+                                    <td>Sarah Smith (Director)</td>
+                                    <td>User Creation</td>
+                                    <td><span class="status pending">Pending</span></td>
+                                    <td>Created new employee account</td>
+                                </tr>
+                                <tr>
+                                    <td>1 hour ago</td>
+                                    <td>Mike Johnson (Admin)</td>
+                                    <td>Company Setup</td>
+                                    <td><span class="status approved">Completed</span></td>
+                                    <td>Configured new company profile</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Companies Page -->
+                <div id="companiesPage" class="page-content">
+                    <div class="table-container">
+                        <div class="table-header">
+                            <h3>Company Management</h3>
+                            <div class="table-actions">
+                                <button class="btn btn-primary btn-sm">
+                                    <i class="fas fa-plus"></i>
+                                    Add Company
+                                </button>
+                            </div>
+                        </div>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Company Name</th>
+                                    <th>Admin</th>
+                                    <th>Employees</th>
+                                    <th>Bank Balance</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>TechCorp Solutions</td>
+                                    <td>admin@techcorp.com</td>
+                                    <td>25</td>
+                                    <td>$125,000</td>
+                                    <td><span class="status active">Active</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline">View</button>
+                                        <button class="btn btn-sm btn-warning">Edit</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Digital Dynamics</td>
+                                    <td>admin@digitaldynamics.com</td>
+                                    <td>18</td>
+                                    <td>$89,500</td>
+                                    <td><span class="status active">Active</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline">View</button>
+                                        <button class="btn btn-sm btn-warning">Edit</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Users Page -->
+                <div id="usersPage" class="page-content">
+                    <div class="table-container">
+                        <div class="table-header">
+                            <h3>User Management</h3>
+                            <div class="table-actions">
+                                <button class="btn btn-primary btn-sm">
+                                    <i class="fas fa-plus"></i>
+                                    Add User
+                                </button>
+                            </div>
+                        </div>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Username</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                    <th>Company</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>John Doe</td>
+                                    <td>john.doe</td>
+                                    <td>john@techcorp.com</td>
+                                    <td>HR Manager</td>
+                                    <td>TechCorp Solutions</td>
+                                    <td><span class="status active">Active</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline">View</button>
+                                        <button class="btn btn-sm btn-warning">Edit</button>
+                                        <button class="btn btn-sm btn-danger">Disable</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Sarah Smith</td>
+                                    <td>sarah.smith</td>
+                                    <td>sarah@techcorp.com</td>
+                                    <td>Director</td>
+                                    <td>TechCorp Solutions</td>
+                                    <td><span class="status active">Active</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline">View</button>
+                                        <button class="btn btn-sm btn-warning">Edit</button>
+                                        <button class="btn btn-sm btn-danger">Disable</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Settings Page -->
+                <div id="settingsPage" class="page-content">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                        <div class="table-container">
+                            <div class="table-header">
+                                <h3>System Settings</h3>
+                            </div>
+                            <div style="padding: 2rem;">
+                                <div class="form-group">
+                                    <label>System Name</label>
+                                    <input type="text" value="PayrollPro" style="width: 100%; padding: 0.75rem; border: 2px solid var(--secondary-200); border-radius: var(--radius-md); font-size: 1rem;">
+                                </div>
+                                <div class="form-group">
+                                    <label>Default Currency</label>
+                                    <select style="width: 100%; padding: 0.75rem; border: 2px solid var(--secondary-200); border-radius: var(--radius-md); font-size: 1rem;">
+                                        <option value="USD">USD ($)</option>
+                                        <option value="EUR">EUR (€)</option>
+                                        <option value="GBP">GBP (£)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Payroll Frequency</label>
+                                    <select style="width: 100%; padding: 0.75rem; border: 2px solid var(--secondary-200); border-radius: var(--radius-md); font-size: 1rem;">
+                                        <option value="monthly">Monthly</option>
+                                        <option value="biweekly">Bi-weekly</option>
+                                        <option value="weekly">Weekly</option>
+                                    </select>
+                                </div>
+                                <button class="btn btn-primary">Save Settings</button>
+                            </div>
+                        </div>
+
+                        <div class="table-container">
+                            <div class="table-header">
+                                <h3>Backup & Security</h3>
+                            </div>
+                            <div style="padding: 2rem;">
+                                <div style="margin-bottom: 1.5rem;">
+                                    <h4 style="margin-bottom: 0.5rem;">Database Backup</h4>
+                                    <p style="color: var(--secondary-600); font-size: 0.875rem;">Last backup: Today, 3:00 AM</p>
+                                    <button class="btn btn-outline btn-sm">Create Backup</button>
+                                </div>
+                                <div style="margin-bottom: 1.5rem;">
+                                    <h4 style="margin-bottom: 0.5rem;">Security Logs</h4>
+                                    <p style="color: var(--secondary-600); font-size: 0.875rem;">Monitor system access and changes</p>
+                                    <button class="btn btn-outline btn-sm">View Logs</button>
+                                </div>
+                                <div>
+                                    <h4 style="margin-bottom: 0.5rem;">System Health</h4>
+                                    <p style="color: var(--success-600); font-size: 0.875rem;">All systems operational</p>
+                                    <button class="btn btn-outline btn-sm">Run Diagnostics</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Other pages -->
+                <div id="employeesPage" class="page-content">
+                    <div class="table-container">
+                        <div class="table-header">
+                            <h3>Employee Management</h3>
+                        </div>
+                        <div style="padding: 2rem; text-align: center;">
+                            <i class="fas fa-user-tie" style="font-size: 4rem; color: var(--secondary-300); margin-bottom: 1rem;"></i>
+                            <h3 style="color: var(--secondary-600);">Employee Management</h3>
+                            <p style="color: var(--secondary-500);">Employee management features coming soon...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="payrollPage" class="page-content">
+                    <div class="table-container">
+                        <div class="table-header">
+                            <h3>Payroll Overview</h3>
+                        </div>
+                        <div style="padding: 2rem; text-align: center;">
+                            <i class="fas fa-money-check-alt" style="font-size: 4rem; color: var(--secondary-300); margin-bottom: 1rem;"></i>
+                            <h3 style="color: var(--secondary-600);">Payroll Overview</h3>
+                            <p style="color: var(--secondary-500);">Payroll management features coming soon...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="notificationsPage" class="page-content">
+                    <div class="table-container">
+                        <div class="table-header">
+                            <h3>System Notifications</h3>
+                        </div>
+                        <div style="padding: 2rem; text-align: center;">
+                            <i class="fas fa-bell" style="font-size: 4rem; color: var(--secondary-300); margin-bottom: 1rem;"></i>
+                            <h3 style="color: var(--secondary-600);">System Notifications</h3>
+                            <p style="color: var(--secondary-500);">Notification management features coming soon...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="reportsPage" class="page-content">
+                    <div class="table-container">
+                        <div class="table-header">
+                            <h3>System Reports</h3>
+                        </div>
+                        <div style="padding: 2rem; text-align: center;">
+                            <i class="fas fa-chart-bar" style="font-size: 4rem; color: var(--secondary-300); margin-bottom: 1rem;"></i>
+                            <h3 style="color: var(--secondary-600);">System Reports</h3>
+                            <p style="color: var(--secondary-500);">Reporting features coming soon...</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script src="main.js"></script>
+    <script>
+        // Page navigation
+        const sidebarLinks = document.querySelectorAll('.sidebar-link');
+        const pageContents = document.querySelectorAll('.page-content');
+        const pageTitle = document.getElementById('pageTitle');
+        const pageSubtitle = document.getElementById('pageSubtitle');
+
+        const pageData = {
+            dashboard: {
+                title: 'Admin Dashboard',
+                subtitle: 'Welcome back, Admin! Here\'s what\'s happening today.'
+            },
+            companies: {
+                title: 'Company Management',
+                subtitle: 'Manage all registered companies and their settings.'
+            },
+            users: {
+                title: 'User Management',
+                subtitle: 'Manage user accounts, roles, and permissions.'
+            },
+            employees: {
+                title: 'Employee Management',
+                subtitle: 'Oversee all employees across all companies.'
+            },
+            payroll: {
+                title: 'Payroll Overview',
+                subtitle: 'Monitor and manage payroll operations system-wide.'
+            },
+            notifications: {
+                title: 'System Notifications',
+                subtitle: 'Manage system-wide notifications and alerts.'
+            },
+            reports: {
+                title: 'System Reports',
+                subtitle: 'Generate comprehensive reports and analytics.'
+            },
+            settings: {
+                title: 'System Settings',
+                subtitle: 'Configure system-wide settings and preferences.'
+            }
+        };
+
+        function showPage(pageName) {
+            // Hide all pages
+            pageContents.forEach(page => page.classList.remove('active'));
+            
+            // Show selected page
+            const selectedPage = document.getElementById(pageName + 'Page');
+            if (selectedPage) {
+                selectedPage.classList.add('active');
+            }
+            
+            // Update active link
+            sidebarLinks.forEach(link => link.classList.remove('active'));
+            const activeLink = document.querySelector(`[data-page="${pageName}"]`);
+            if (activeLink) {
+                activeLink.classList.add('active');
+            }
+            
+            // Update page title and subtitle
+            if (pageData[pageName]) {
+                pageTitle.textContent = pageData[pageName].title;
+                pageSubtitle.textContent = pageData[pageName].subtitle;
+            }
+        }
+
+        // Add event listeners to sidebar links
+        sidebarLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const pageName = link.getAttribute('data-page');
+                showPage(pageName);
+            });
+        });
+
+        // Check authentication
+        function checkAuth() {
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            if (!user.username || user.role !== 'admin') {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // Update user info
+            document.getElementById('userName').textContent = user.username;
+        }
+
+        function logout() {
+            localStorage.removeItem('user');
+            window.location.href = 'login.html';
+        }
+
+        // Initialize
+        checkAuth();
+
+        // Simulate real-time updates
+        function updateStats() {
+            // Simulate changing stats
+            const stats = {
+                totalCompanies: Math.floor(Math.random() * 20) + 10,
+                activeUsers: Math.floor(Math.random() * 300) + 200,
+                pendingPayrolls: Math.floor(Math.random() * 15) + 5,
+                systemAlerts: Math.floor(Math.random() * 8) + 1
+            };
+            
+            Object.keys(stats).forEach(key => {
+                const element = document.getElementById(key);
+                if (element) {
+                    element.textContent = stats[key];
+                }
+            });
+        }
+
+        // Update stats every 30 seconds
+        setInterval(updateStats, 30000);
+    </script>
+</body>
+</html>
+            <!-- Dashboard Overview -->
+            <section id="dashboard-section" class="content-section active">
+                <div class="section-header">
+                    <h2>Dashboard Overview</h2>
+                    <p>System-wide statistics and insights</p>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">🏢</div>
+                        <div class="stat-content">
+                            <h3 id="totalCompanies">-</h3>
+                            <p>Total Companies</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">👥</div>
+                        <div class="stat-content">
+                            <h3 id="totalUsers">-</h3>
+                            <p>Total Users</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">💰</div>
+                        <div class="stat-content">
+                            <h3 id="totalBalance">-</h3>
+                            <p>Total Company Funds</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📋</div>
+                        <div class="stat-content">
+                            <h3 id="totalPayrolls">-</h3>
+                            <p>Total Payrolls</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Companies Section -->
+            <section id="companies-section" class="content-section">
+                <div class="section-header">
+                    <h2>Companies Management</h2>
+                    <button onclick="showCreateCompanyForm()" class="btn btn-primary">Add New Company</button>
+                </div>
+                
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Bank Balance</th>
+                                <th>Created By</th>
+                                <th>Created At</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="companiesTableBody">
+                            <!-- Companies will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Users Section -->
+            <section id="users-section" class="content-section">
+                <div class="section-header">
+                    <h2>Users Management</h2>
+                    <button onclick="showCreateUserForm()" class="btn btn-primary">Add New User</button>
+                </div>
+                
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Username</th>
+                                <th>Name</th>
+                                <th>Role</th>
+                                <th>Company</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody">
+                            <!-- Users will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- System Stats Section -->
+            <section id="system-section" class="content-section">
+                <div class="section-header">
+                    <h2>System Statistics</h2>
+                </div>
+                
+                <div class="stats-detailed">
+                    <div class="stat-group">
+                        <h3>Payroll Statistics</h3>
+                        <div class="stat-items">
+                            <div class="stat-item">
+                                <span>Pending Payrolls:</span>
+                                <span id="pendingPayrolls">-</span>
+                            </div>
+                            <div class="stat-item">
+                                <span>Approved Payrolls:</span>
+                                <span id="approvedPayrolls">-</span>
+                            </div>
+                            <div class="stat-item">
+                                <span>Paid Payrolls:</span>
+                                <span id="paidPayrolls">-</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal for Creating Company -->
+    <div id="companyModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Create New Company</h3>
+                <span class="close" onclick="closeModal('companyModal')">&times;</span>
+            </div>
+            <form id="createCompanyForm">
+                <div class="form-group">
+                    <label for="companyName">Company Name</label>
+                    <input type="text" id="companyName" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="bankBalance">Initial Bank Balance</label>
+                    <input type="number" id="bankBalance" name="bank_balance" step="0.01" required>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" onclick="closeModal('companyModal')" class="btn btn-secondary">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Create Company</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+    <script>
+        // Check authentication
+        checkAuth('Admin');
+
+        // Set user name
+        document.getElementById('userName').textContent = localStorage.getItem('firstName') + ' ' + localStorage.getItem('lastName');
+
+        // Sidebar navigation
+        document.querySelectorAll('.sidebar-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const section = this.dataset.section;
+                
+                // Remove active class from all links and sections
+                document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+                document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+                
+                // Add active class to clicked link and corresponding section
+                this.classList.add('active');
+                document.getElementById(section + '-section').classList.add('active');
+                
+                // Load data for the section
+                loadSectionData(section);
+            });
+        });
+
+        // Load dashboard data on page load
+        loadDashboardStats();
+        loadSectionData('dashboard');
+
+        async function loadDashboardStats() {
+            try {
+                const response = await apiCall('/api/dashboard/stats/');
+                if (response.ok) {
+                    const stats = await response.json();
+                    document.getElementById('totalCompanies').textContent = stats.total_companies || 0;
+                    document.getElementById('totalUsers').textContent = stats.total_employees || 0;
+                    document.getElementById('totalBalance').textContent = '$' + (stats.company_balance || 0).toLocaleString();
+                    document.getElementById('totalPayrolls').textContent = stats.total_payroll_amount || 0;
+                    document.getElementById('pendingPayrolls').textContent = stats.pending_payrolls || 0;
+                    document.getElementById('approvedPayrolls').textContent = stats.approved_payrolls || 0;
+                    document.getElementById('paidPayrolls').textContent = stats.paid_payrolls || 0;
+                }
+            } catch (error) {
+                console.error('Error loading dashboard stats:', error);
+            }
+        }
+
+        async function loadSectionData(section) {
+            switch(section) {
+                case 'companies':
+                    await loadCompanies();
+                    break;
+                case 'users':
+                    await loadUsers();
+                    break;
+            }
+        }
+
+        async function loadCompanies() {
+            try {
+                const response = await apiCall('/api/companies/');
+                if (response.ok) {
+                    const companies = await response.json();
+                    const tbody = document.getElementById('companiesTableBody');
+                    tbody.innerHTML = companies.results ? companies.results.map(company => `
+                        <tr>
+                            <td>${company.id}</td>
+                            <td>${company.name}</td>
+                            <td>$${parseFloat(company.bank_balance).toLocaleString()}</td>
+                            <td>${company.created_by}</td>
+                            <td>${new Date(company.created_at).toLocaleDateString()}</td>
+                            <td>
+                                <button onclick="editCompany(${company.id})" class="btn btn-sm">Edit</button>
+                                <button onclick="deleteCompany(${company.id})" class="btn btn-sm btn-danger">Delete</button>
+                            </td>
+                        </tr>
+                    `).join('') : '<tr><td colspan="6">No companies found</td></tr>';
+                }
+            } catch (error) {
+                console.error('Error loading companies:', error);
+            }
+        }
+
+        async function loadUsers() {
+            try {
+                const response = await apiCall('/api/users/');
+                if (response.ok) {
+                    const users = await response.json();
+                    const tbody = document.getElementById('usersTableBody');
+                    tbody.innerHTML = users.results ? users.results.map(user => `
+                        <tr>
+                            <td>${user.id}</td>
+                            <td>${user.username}</td>
+                            <td>${user.full_name}</td>
+                            <td>${user.role}</td>
+                            <td>${user.company || 'N/A'}</td>
+                            <td>
+                                <button onclick="editUser(${user.id})" class="btn btn-sm">Edit</button>
+                                <button onclick="deleteUser(${user.id})" class="btn btn-sm btn-danger">Delete</button>
+                            </td>
+                        </tr>
+                    `).join('') : '<tr><td colspan="6">No users found</td></tr>';
+                }
+            } catch (error) {
+                console.error('Error loading users:', error);
+            }
+        }
+
+        function showCreateCompanyForm() {
+            document.getElementById('companyModal').style.display = 'block';
+        }
+
+        function showCreateUserForm() {
+            // Implementation for user creation modal
+            alert('User creation form would open here');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // Handle company creation form
+        document.getElementById('createCompanyForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const companyData = {
+                name: formData.get('name'),
+                bank_balance: formData.get('bank_balance')
+            };
+
+            try {
+                const response = await apiCall('/api/companies/', {
+                    method: 'POST',
+                    body: JSON.stringify(companyData)
+                });
+
+                if (response.ok) {
+                    alert('Company created successfully!');
+                    closeModal('companyModal');
+                    loadCompanies();
+                    e.target.reset();
+                } else {
+                    const error = await response.json();
+                    alert('Error creating company: ' + (error.detail || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error('Error creating company:', error);
+                alert('Error creating company');
+            }
+        });
+
+        function editCompany(id) {
+            alert('Edit company functionality would be implemented here');
+        }
+
+        function deleteCompany(id) {
+            if (confirm('Are you sure you want to delete this company?')) {
+                // Implementation for company deletion
+                alert('Delete company functionality would be implemented here');
+            }
+        }
+
+        function editUser(id) {
+            alert('Edit user functionality would be implemented here');
+        }
+
+        function deleteUser(id) {
+            if (confirm('Are you sure you want to delete this user?')) {
+                // Implementation for user deletion
+                alert('Delete user functionality would be implemented here');
+            }
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
