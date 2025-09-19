@@ -1,0 +1,74 @@
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <div class="logo" style="cursor:pointer;" onclick="window.location.reload()">
+            <span class="logo-icon"><i class="fa-solid fa-coins"></i></span>
+            <span class="logo-text">PayrollPro</span>
+        </div>
+    </div>
+    <nav class="nav-menu">
+        <div class="nav-section">
+            <div class="nav-section-title">OVERVIEW</div>
+            <!-- Home nav-item -->
+            <div class="nav-item">
+                <a class="nav-link" href="#home" onclick="goToDashboardHome()">
+                    <i class="fa-solid fa-house nav-icon"></i>
+                    Home
+                </a>
+            </div>
+            <div class="nav-item">
+                <a class="nav-link" href="#analytics" onclick="loadPageContent('analytics')">
+                    <i class="fa-solid fa-chart-pie nav-icon"></i>
+                    Analytics
+                </a>
+            </div>
+        </div>
+        <div class="nav-section">
+            <div class="nav-section-title">MANAGEMENT</div>
+            <div class="nav-item">
+                <a class="nav-link" href="#employees" onclick="loadPageContent('employees')">
+                    <i class="fa-solid fa-users nav-icon"></i>
+                    Employees
+                </a>
+            </div>
+            <div class="nav-item">
+                <a class="nav-link" href="#departments" onclick="loadPageContent('departments')">
+                    <i class="fa-solid fa-building nav-icon"></i>
+                    Departments
+                </a>
+            </div>
+            <div class="nav-item">
+                <a class="nav-link" href="#payroll" onclick="loadPageContent('payroll')">
+                    <i class="fa-solid fa-money-bill-wave nav-icon"></i>
+                    Payroll
+                </a>
+            </div>
+            <div class="nav-item">
+                <a class="nav-link" href="#dashboard-stats" onclick="loadPageContent('dashboard-stats')">
+                    <i class="fa-solid fa-table nav-icon"></i>
+                    Dashboard Stats
+                </a>
+            </div>
+        </div>
+        <div class="nav-section">
+            <div class="nav-section-title">ADMINISTRATION</div>
+            <div class="nav-item">
+                <a class="nav-link" href="#user-management" onclick="loadPageContent('user-management')">
+                    <i class="fa-solid fa-user-gear nav-icon"></i>
+                    User Management
+                </a>
+            </div>
+            <div class="nav-item">
+                <a class="nav-link" href="#settings" onclick="loadPageContent('settings')">
+                    <i class="fa-solid fa-cog nav-icon"></i>
+                    Settings
+                </a>
+            </div>
+            <div class="nav-item">
+                <a class="nav-link" href="#logout" onclick="logout()">
+                    <i class="fa-solid fa-sign-out-alt nav-icon"></i>
+                    Logout
+                </a>
+            </div>
+        </div>
+    </nav>
+</aside>
