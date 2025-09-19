@@ -316,6 +316,28 @@
         }
         
         /**
+         * Clear all messages from the message container
+         */
+        function clearMessages() {
+            const messageContainer = document.getElementById('messageContainer');
+            if (messageContainer) {
+                messageContainer.innerHTML = '';
+            }
+        }
+        
+        /**
+         * Show a message in the message container
+         * @param {string} message - The message to display
+         * @param {string} type - 'success' or 'error'
+         */
+        function showMessage(message, type = 'error') {
+            const messageContainer = document.getElementById('messageContainer');
+            if (messageContainer) {
+                messageContainer.innerHTML = `<div class="message ${type}">${message}</div>`;
+            }
+        }
+        
+        /**
          * Validate signup form data
          * @param {Object} data - Form data object
          * @returns {Object} Validation result
@@ -470,6 +492,35 @@
             errorElements.forEach(element => {
                 element.textContent = '';
                 element.style.display = 'none';
+            });
+        }
+        
+        /**
+         * Set loading state for a button
+         * @param {string} buttonId - The button's DOM id
+         * @param {boolean} isLoading - Whether to show loading state
+         * @param {string} loadingText - Text to show while loading
+         */
+        function setButtonLoading(buttonId, isLoading, loadingText = 'Loading...') {
+            const btn = document.getElementById(buttonId);
+            if (!btn) return;
+            if (isLoading) {
+                btn.dataset.originalText = btn.innerHTML;
+                btn.innerHTML = `<span class="spinner" style="margin-right:8px;"><i class="fas fa-spinner fa-spin"></i></span>${loadingText}`;
+                btn.disabled = true;
+            } else {
+                if (btn.dataset.originalText) {
+                    btn.innerHTML = btn.dataset.originalText;
+                    delete btn.dataset.originalText;
+                }
+                btn.disabled = false;
+            }
+        }
+        
+        async function apiCall(url, options) {
+            return fetch(url, {
+                headers: { 'Content-Type': 'application/json' },
+                ...options
             });
         }
     </script>

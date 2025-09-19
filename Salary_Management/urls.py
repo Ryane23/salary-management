@@ -37,7 +37,7 @@ def serve_frontend_file(request, filename='index.html'):
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('payslip_reportcard.urls')),  # API endpoints (fixed path)
+    path('', include('payslip_reportcard.urls')),  # <-- Add this line
     
     # Frontend routes
     path('', never_cache(serve_frontend_file), {'filename': 'index.html'}, name='home'),

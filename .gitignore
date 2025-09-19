@@ -1,0 +1,57 @@
+# Python virtual environment
+myenv/
+env/
+venv/
+ENV/
+
+# Django/Migrations
+**/migrations/
+*.pyc
+__pycache__/
+
+# SQLite database
+db.sqlite3
+*.sqlite3
+
+# Node modules (if using React or npm)
+node_modules/
+
+# VSCode settings
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Python cache
+*.pyo
+*.pyd
+
+# Logs
+*.log
+
+# Coverage reports
+htmlcov/
+.coverage
+.tox/
+.nox/
+.cache/
+coverage.xml
+
+# Static/media files (if generated)
+staticfiles/
+media/
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# Local environment/config
+.env
+.env.*
+
+# IDEs
+.idea/
+*.sublime-workspace
+*.sublime-project

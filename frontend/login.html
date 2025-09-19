@@ -117,40 +117,42 @@
             alertContainer.innerHTML = '';
             
             try {
-                // DEMO AUTHENTICATION: Simple client-side validation for demo
-                // In a real app, this would be sent to the server
-                const validCredentials = {
-                    'admin': { password: 'admin123', role: 'Admin' },
-                    'hr_manager': { password: 'hr123', role: 'HR' },
-                    'director': { password: 'director123', role: 'Director' }
-                };
-                
-                // Simulate server delay
-                await new Promise(resolve => setTimeout(resolve, 1000));
-                
-                // Check credentials
-                const user = validCredentials[loginData.username];
-                
-                if (user && user.password === loginData.password && user.role === loginData.role) {
-                    // SUCCESS: Valid credentials
-                    
-                    // Store user info in localStorage (simulating session)
-                    localStorage.setItem('user', JSON.stringify({
+                const response = await fetch('http://127.0.0.1:8000/auth/login/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
                         username: loginData.username,
-                        role: loginData.role,
+                        password: loginData.password
+                    })
+                });
+
+                // Check if response is JSON
+                const contentType = response.headers.get('content-type');
+                if (!contentType || !contentType.includes('application/json')) {
+                    throw new Error('Server did not return JSON. Check backend URL and server status.');
+                }
+
+                const data = await response.json();
+
+                if (response.ok && data.token) {
+                    // Store user info and token
+                    localStorage.setItem('user', JSON.stringify({
+                        username: data.username,
+                        role: data.role,
+                        user_id: data.user_id,
+                        token: data.token,
                         loginTime: new Date().toISOString()
                     }));
-                    
-                    // Show success message
+                    localStorage.setItem('token', data.token);
+
                     alertContainer.innerHTML = `
                         <div class="alert alert-success">
-                            Login successful! Redirecting to ${loginData.role} dashboard in 3 seconds...
+                            Login successful! Redirecting to ${data.role} dashboard in 3 seconds...
                         </div>
                     `;
-                    
-                    // Redirect to appropriate dashboard after 3 seconds
+
                     setTimeout(() => {
-                        switch(loginData.role) {
+                        switch(data.role) {
                             case 'Admin':
                                 window.location.href = 'dashboard_admin_new.html';
                                 break;
@@ -164,23 +166,15 @@
                                 window.location.href = 'dashboard_admin_new.html';
                         }
                     }, 3000);
-                    
                 } else {
-                    // ERROR: Invalid credentials
-                    throw new Error('Invalid username, password, or role');
+                    throw new Error(data.error || 'Invalid username or password');
                 }
-                
             } catch (error) {
-                // Handle login errors
-                console.error('Login error:', error);
-                
                 alertContainer.innerHTML = `
                     <div class="alert alert-error">
                         Login failed: ${error.message}. Please check your credentials and try again.
                     </div>
                 `;
-                
-                // Reset button
                 loginBtn.textContent = 'Login';
                 loginBtn.disabled = false;
             }

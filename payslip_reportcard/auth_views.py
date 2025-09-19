@@ -4,7 +4,9 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from .models import ExtendedUser
+from Dashboard.models import User as DashboardUser  # <-- Add this line
 from .serializers import ExtendedUserSerializer
+from django.http import JsonResponse
 import logging
 
 logger = logging.getLogger(__name__)
@@ -23,74 +25,26 @@ def login_view(request):
     
     Returns success or error response
     """
-    try:
-        username = request.data.get('username')
-        password = request.data.get('password')
-        
-        # Validate input data
-        if not username or not password:
-            return Response({
-                'error': 'Username and password are required'
-            }, status=status.HTTP_400_BAD_REQUEST)
-        
-        logger.info(f"Login attempt for username: {username}")
-        
-        # Import Dashboard User model
-        from Dashboard.models import User as DashboardUser
-        
-        # Try to find user
+    if request.method == 'POST':
+        import json
+        data = json.loads(request.body)
+        username = data.get('username')
+        password = data.get('password')
         try:
-            dashboard_user = DashboardUser.objects.get(username=username)
-            
-            # Simple password check (Note: In production, use proper hashing)
-            if dashboard_user.password == password:
-                logger.info(f"Login successful for user: {username}")
-                
-                # Create token for API access
-                token, created = Token.objects.get_or_create(
-                    user_id=dashboard_user.id,
-                    defaults={'key': Token.generate_key()}
-                )
-                
-                # Get or create extended user for role information
-                try:
-                    extended_user = ExtendedUser.objects.get(user=dashboard_user)
-                    role = extended_user.role
-                    company_id = extended_user.company.id if extended_user.company else None
-                except ExtendedUser.DoesNotExist:
-                    # Create default extended user profile
-                    logger.info(f"Creating default ExtendedUser for: {username}")
-                    extended_user = ExtendedUser.objects.create(user=dashboard_user, role='HR')
-                    role = 'HR'
-                    company_id = None
-                
-                return Response({
-                    'message': 'Login successful',
-                    'token': token.key,
-                    'user_id': dashboard_user.id,
-                    'username': dashboard_user.username,
-                    'role': role,
-                    'company_id': company_id,
-                    'first_name': dashboard_user.first_names,
-                    'last_name': dashboard_user.last_names,
-                }, status=status.HTTP_200_OK)
+            user = DashboardUser.objects.get(username=username)
+            if user.password == password:  # or use check_password if hashed
+                # Return token and user info
+                return JsonResponse({
+                    'token': 'dummy-token',
+                    'username': user.username,
+                    'role': user.extendeduser.role,
+                    'user_id': user.id
+                })
             else:
-                logger.warning(f"Invalid password for user: {username}")
-                return Response({
-                    'error': 'Invalid username or password'
-                }, status=status.HTTP_401_UNAUTHORIZED)
-                
+                return JsonResponse({'error': 'Invalid username or password'}, status=401)
         except DashboardUser.DoesNotExist:
-            logger.warning(f"User not found: {username}")
-            return Response({
-                'error': 'Invalid username or password'
-            }, status=status.HTTP_401_UNAUTHORIZED)
-    
-    except Exception as e:
-        logger.error(f"Login error for {username}: {str(e)}")
-        return Response({
-            'error': 'Authentication failed. Please try again.'
-        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return JsonResponse({'error': 'Invalid username or password'}, status=401)
+    return JsonResponse({'error': 'Invalid request'}, status=400)
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
@@ -165,13 +119,12 @@ def signup_view(request):
         
         logger.info(f"Created Dashboard user: {username}")
         
-        # Create extended user profile with role
-        extended_user = ExtendedUser.objects.create(
-            user=dashboard_user,
-            role=role
-        )
+        # Set role on the auto-created ExtendedUser
+        extended_user = ExtendedUser.objects.get(user=dashboard_user)
+        extended_user.role = role
+        extended_user.save()
         
-        logger.info(f"Created ExtendedUser with role {role} for: {username}")
+        logger.info(f"Set ExtendedUser role {role} for: {username}")
         
         return Response({
             'message': 'User created successfully',
