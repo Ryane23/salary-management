@@ -58,3 +58,50 @@ function loadEmployeesPage() {
     `;
     setTimeout(() => { loadEmployees(); }, 100);
 }
+
+window.loadPageContent = function(section) {
+    let file = '';
+    switch (section) {
+        case 'dashboard':
+            file = '/static/dashboard_admin_new.html';
+            break;
+        case 'analytics':
+            file = '/static/admin-sidebar/analytics.html';
+            break;
+        case 'employees':
+            file = '/static/admin-sidebar/employees.html';
+            break;
+        case 'departments':
+            file = '/static/admin-sidebar/departments.html';
+            break;
+        case 'payroll':
+            file = '/static/admin-sidebar/payroll.html';
+            break;
+        case 'dashboard-stats':
+            file = '/static/admin-sidebar/dashboard-stats.html';
+            break;
+        case 'user-management':
+            file = '/static/admin-sidebar/user-management.html';
+            break;
+        case 'settings':
+            file = '/static/admin-sidebar/settings.html';
+            break;
+        default:
+            file = '/static/dashboard_admin_new.html';
+    }
+    fetch(file)
+        .then(res => res.text())
+        .then(html => {
+            document.getElementById('contentArea').innerHTML = html;
+        });
+};
+
+window.goToDashboardHome = function() {
+    // Remove the hash from the URL without reloading the page
+    history.replaceState(null, '', window.location.pathname + window.location.search);
+    // Reload the dashboard content (full reload)
+    window.location.reload();
+    // OR: If you want to just reset the content area without reload:
+    // document.getElementById('contentArea').innerHTML = /* main dashboard HTML */;
+    // document.getElementById('pageTitle').textContent = 'Dashboard';
+}

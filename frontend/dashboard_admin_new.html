@@ -19,80 +19,7 @@
 
     <div class="dashboard">
         <!-- Sidebar -->
-        <aside class="sidebar" id="sidebar">
-            <div class="sidebar-header">
-                <div class="logo">
-                    <span class="logo-icon"><i class="fa-solid fa-coins"></i></span>
-                    <span class="logo-text">PayrollPro</span>
-                </div>
-            </div>
-            <nav class="nav-menu">
-                <div class="nav-section">
-                    <div class="nav-section-title">OVERVIEW</div>
-                    <div class="nav-item">
-                        <a class="nav-link active" href="#dashboard" onclick="loadPageContent('dashboard')">
-                            <i class="fa-solid fa-chart-line nav-icon"></i>
-                            Dashboard
-                        </a>
-                    </div>
-                    <div class="nav-item">
-                        <a class="nav-link" href="#analytics" onclick="loadPageContent('analytics')">
-                            <i class="fa-solid fa-chart-pie nav-icon"></i>
-                            Analytics
-                        </a>
-                    </div>
-                </div>
-                <div class="nav-section">
-                    <div class="nav-section-title">MANAGEMENT</div>
-                    <div class="nav-item">
-                        <a class="nav-link" href="#employees" onclick="loadPageContent('employees')">
-                            <i class="fa-solid fa-users nav-icon"></i>
-                            Employees
-                        </a>
-                    </div>
-                    <div class="nav-item">
-                        <a class="nav-link" href="#departments" onclick="loadPageContent('departments')">
-                            <i class="fa-solid fa-building nav-icon"></i>
-                            Departments
-                        </a>
-                    </div>
-                    <div class="nav-item">
-                        <a class="nav-link" href="#payroll" onclick="loadPageContent('payroll')">
-                            <i class="fa-solid fa-money-bill-wave nav-icon"></i>
-                            Payroll
-                        </a>
-                    </div>
-                    <div class="nav-item">
-                        <a class="nav-link" href="#dashboard-stats" onclick="loadPageContent('dashboard-stats')">
-                            <i class="fa-solid fa-table nav-icon"></i>
-                            Dashboard Stats
-                        </a>
-                    </div>
-                </div>
-                <div class="nav-section">
-                    <div class="nav-section-title">ADMINISTRATION</div>
-                    <div class="nav-item">
-                        <a class="nav-link" href="#user-management" onclick="loadPageContent('user-management')">
-                            <i class="fa-solid fa-user-gear nav-icon"></i>
-                            User Management
-                        </a>
-                    </div>
-                    <div class="nav-item">
-                        <a class="nav-link" href="#settings" onclick="loadPageContent('settings')">
-                            <i class="fa-solid fa-cog nav-icon"></i>
-                            Settings
-                        </a>
-                    </div>
-                    <div class="nav-item">
-                        <a class="nav-link" href="#logout" onclick="logout()">
-                            <i class="fa-solid fa-sign-out-alt nav-icon"></i>
-                            Logout
-                        </a>
-                    </div>
-                </div>
-            </nav>
-        </aside>
-
+        <div id="sidebar-container"></div>
         <!-- Main Content -->
         <main class="main-content">
             <!-- Top Bar -->
@@ -242,9 +169,9 @@
             </div>
 
             <!-- Content Area for Dynamic Loading -->
-            <div class="content-area" id="contentArea">
+            
                 <!-- Dashboard Overview -->
-                <div class="stats-grid">
+                <!-- <div class="stats-grid">
                     <div class="stat-card">
                         <div class="stat-header">
                             <div class="stat-title">Total Employees</div>
@@ -300,9 +227,9 @@
                             All departments active
                         </div>
                     </div>
-                </div>
+                </div> -->
 
-                <div class="content-grid">
+                <!-- <div class="content-grid">
                     <div class="content-card">
                         <div class="card-header">
                             <h3 class="card-title">Recent Activity</h3>
@@ -379,11 +306,18 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
+                </div> -->
+            
         </main>
     </div>
-
+    <script>
+        // Dynamically load sidebar HTML
+        fetch('/static/admin-sidebar/admin-sidebar.html')
+            .then(res => res.text())
+            .then(html => {
+                document.getElementById('sidebar-container').innerHTML = html;
+            });
+    </script>
     <script src="dashboard_admin_new.js"></script>
 </body>
 </html>
