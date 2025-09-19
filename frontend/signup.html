@@ -189,6 +189,24 @@
                         </div>
                     </div>
 
+                    <!-- Phone Number Field -->
+                    <div class="form-group">
+                        <label for="phoneNumber">
+                            <i class="fas fa-phone"></i> Phone Number
+                        </label>
+                        <input 
+                            type="tel" 
+                            id="phoneNumber" 
+                            name="phoneNumber" 
+                            required 
+                            placeholder="Enter phone number"
+                            autocomplete="tel"
+                            pattern="[0-9+\-\s]{7,15}"
+                        >
+                        <!-- Error message will be shown here -->
+                        <div class="field-error" id="phoneNumberError"></div>
+                    </div>
+
                     <!-- Submit Button -->
                     <button type="submit" class="btn btn-primary btn-full" id="signupBtn">
                         <i class="fas fa-user-plus"></i>
@@ -256,6 +274,7 @@
                 lastName: document.getElementById('lastName').value.trim(),
                 username: document.getElementById('username').value.trim(),
                 email: document.getElementById('email').value.trim(),
+                phoneNumber: document.getElementById('phoneNumber').value.trim(), // <-- Add this line
                 role: document.getElementById('role').value,
                 password: document.getElementById('password').value,
                 confirmPassword: document.getElementById('confirmPassword').value
@@ -277,9 +296,9 @@
                     username: formData.username,
                     email: formData.email,
                     password: formData.password,
-                    first_names: formData.firstName,  // Note: Dashboard.User uses first_names
-                    last_names: formData.lastName,    // Note: Dashboard.User uses last_names
-                    phone_number: '0000000000',       // Default phone number
+                    first_names: formData.firstName,
+                    last_names: formData.lastName,
+                    phone_number: formData.phoneNumber, // <-- Use actual phone number
                     role: formData.role
                 };
                 
@@ -409,6 +428,15 @@
                 isValid = false;
             }
             
+            // Phone number validation
+            if (!data.phoneNumber) {
+                errors.phoneNumber = 'Phone number is required';
+                isValid = false;
+            } else if (!/^[0-9+\-\s]{7,15}$/.test(data.phoneNumber)) {
+                errors.phoneNumber = 'Enter a valid phone number';
+                isValid = false;
+            }
+            
             return { isValid, errors };
         }
         
@@ -441,6 +469,9 @@
             }
             if (errorData.password) {
                 showFieldError('password', Array.isArray(errorData.password) ? errorData.password[0] : errorData.password);
+            }
+            if (errorData.phone_number) {
+                showFieldError('phoneNumber', Array.isArray(errorData.phone_number) ? errorData.phone_number[0] : errorData.phone_number);
             }
             
             // Show general error message
